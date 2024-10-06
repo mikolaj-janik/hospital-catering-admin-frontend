@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { inject } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -21,6 +21,7 @@ export class LoginComponent {
   password = '';
   error = '';
   isLoggedIn! : boolean;
+  errorStatusCode! : number;
 
   authService = inject(AuthService);
   router = inject(Router);
@@ -34,6 +35,11 @@ export class LoginComponent {
     this.authService.isLoggedIn$.subscribe(
       (loggedIn: boolean) => {
         this.isLoggedIn = loggedIn;
+      }
+    );
+    this.authService.errorStatusCode$.subscribe(
+      (statusCode: number) => {
+        this.errorStatusCode = statusCode;
       }
     );
     if (this.isLoggedIn) {

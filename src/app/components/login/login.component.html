@@ -41,8 +41,12 @@
                     <span>Hasło musi zawierać min. 6 znaków.</span>
                   </div>
 
-                  <div *ngIf="authService.isError()" class="alert alert-danger mt-1">
+                  <div *ngIf="errorStatusCode === 401" class="alert alert-danger mt-1">
                     <span>Niepoprawny adres e-mail lub hasło!</span>
+                  </div>
+
+                  <div *ngIf="errorStatusCode === 0" class="alert alert-danger mt-1">
+                    <span>Problem z połączeniem z serwerem!</span>
                   </div>
 
                   <div class="text-center pt-1 mb-5 mt-4 pb-1">

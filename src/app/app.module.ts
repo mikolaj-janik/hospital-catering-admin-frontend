@@ -20,13 +20,17 @@ import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
 import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { HttpClient, HttpClientModule, HttpHandler } from '@angular/common/http';
+import { authGuard, authGuardLogin } from './service/auth.guard.service';
+import { NavbarComponent } from "./components/navbar/navbar.component";
+import { provideToastr, ToastrModule } from 'ngx-toastr';
 
 const routes: Routes = [
-  {path: 'login', component: LoginComponent}
+  {path: 'login', component: LoginComponent, canActivate: [authGuardLogin]},
+  {path: 'logout', component: LoginComponent, canActivate: [authGuardLogin]}
 ]
 
 @NgModule({
@@ -53,9 +57,14 @@ const routes: Routes = [
     MdbTabsModule,
     MdbTooltipModule,
     MdbValidationModule,
-    RouterModule.forRoot(routes)
+    ToastrModule.forRoot(),
+    RouterModule.forRoot(routes),
+    NavbarComponent
+],
+  providers: [
+    provideAnimations(),
+    provideToastr()
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,3 +1,6 @@
 <section class="gradient-form py-5 overflow-auto" style="background-color: #eee; height: 100vh;">
+  <div *ngIf="isLoggedIn" class="container">
+    <app-navbar></app-navbar>
+  </div>
   <router-outlet></router-outlet>
 </section>
