@@ -20,15 +20,17 @@ import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
 import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 
-import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations, provideNoopAnimations } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { HttpClient, HttpClientModule, HttpHandler } from '@angular/common/http';
 import { authGuard, authGuardLogin } from './service/auth.guard.service';
 import { NavbarComponent } from "./components/navbar/navbar.component";
 import { provideToastr, ToastrModule } from 'ngx-toastr';
+import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
+  {path: '', component: HomeComponent, canActivate: [authGuard]},
   {path: 'login', component: LoginComponent, canActivate: [authGuardLogin]},
   {path: 'logout', component: LoginComponent, canActivate: [authGuardLogin]}
 ]
@@ -63,7 +65,8 @@ const routes: Routes = [
 ],
   providers: [
     provideAnimations(),
-    provideToastr()
+    provideToastr(),
+    provideNoopAnimations()
   ],
   bootstrap: [AppComponent]
 })
