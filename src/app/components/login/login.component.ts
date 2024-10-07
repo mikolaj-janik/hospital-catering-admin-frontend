@@ -19,6 +19,7 @@ import { AuthService } from 'src/app/service/auth.service';
 export class LoginComponent {
   email = '';
   password = '';
+  stayLoggedIn = false;
   error = '';
   isLoggedIn! : boolean;
   errorStatusCode! : number;
@@ -28,7 +29,8 @@ export class LoginComponent {
 
   loginForm = new FormGroup({
     email: new FormControl(this.email, [Validators.required, Validators.email]),
-    password: new FormControl(this.password, [Validators.required, Validators.minLength(6)])
+    password: new FormControl(this.password, [Validators.required, Validators.minLength(6)]),
+    stayLoggedIn: new FormControl(this.stayLoggedIn)
   });
 
   ngOnInit() {
@@ -49,12 +51,16 @@ export class LoginComponent {
 
   login() {
     if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
+      const { email, password, stayLoggedIn } = this.loginForm.value;
       
-      this.authService.login({
+      console.log(stayLoggedIn);
+
+      this.authService.login(
+      {
         email: email as string,
         password: password as string
-      })
+      },
+      stayLoggedIn)
       .subscribe(() => {
         console.log('Successfully logged in!');
         this.router.navigate(['/']);

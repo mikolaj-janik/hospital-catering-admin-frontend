@@ -11,6 +11,7 @@ export class AuthService {
 
   private readonly JWT_TOKEN = 'JWT_TOKEN';
   private readonly USER_EMAIL = 'USER_EMAIL';
+  private readonly STAY_LOGGEDIN_FLAG = 'STAY_LOGGED_IN';
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
   public isLoggedIn$ = this.isAuthenticatedSubject.asObservable();
@@ -24,22 +25,22 @@ export class AuthService {
     private toastr: ToastrService 
   ) {}
 
-  login(user: {email: string, password: string}): Observable<any> {
+  login(user: {email: string, password: string}, stayLoggedIn: boolean): Observable<any> {
     return this.http
     .post(`${environment.apiUrl}/login`, user)
     .pipe(
-      tap((token: {token: string}) => this.doLoginUser(user.email, token.token)),
+      tap((token: {token: string}) => this.doLoginUser(user.email, token.token, stayLoggedIn)),
       catchError((error: HttpErrorResponse) => {
         let errorMessage = '';
         if (error.status === 401) {
-          errorMessage = error.error.message;
           this.errorStatusCode.next(401);
           this.toastr.error('Niepoprawny adres e-mail lub hasło');
         } 
         else if (error.status === 0) {
-          errorMessage = error.error.message;
-          this.errorStatusCode.next(0);
+          
+          this.handleServerConnectionError();
         }
+        errorMessage = error.error.message;
         console.log(errorMessage);
         return throwError(() => new Error(errorMessage));
       })
@@ -49,6 +50,7 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     const token = localStorage.getItem(this.JWT_TOKEN);
+    const stayLoggedInFlag = localStorage.getItem(this.STAY_LOGGEDIN_FLAG);
 
     if (!token) {
       return false;
@@ -64,6 +66,10 @@ export class AuthService {
     const currentDate = new Date().getTime();
 
     if (expirationDate < currentDate) {
+      if (stayLoggedInFlag === 'true') {
+        this.refreshToken(token);
+        return true;
+      }
       this.toastr.warning('Sesja wygasła');
       return false;
     }
@@ -84,16 +90,58 @@ export class AuthService {
   logout() {
     localStorage.removeItem(this.JWT_TOKEN);
     localStorage.removeItem(this.USER_EMAIL);
+    localStorage.removeItem(this.STAY_LOGGEDIN_FLAG);
     this.isAuthenticatedSubject.next(false);
     this.routerService.navigate(['/login']);
   }
 
-  private doLoginUser(email: string, token: string) {
+  private refreshToken(expiredToken: string) {
+    return this.http
+    .post(`${environment.apiUrl}/refresh`, {token: expiredToken})
+    .pipe(
+      tap((token: {token: string}) => {
+        this.storeJwtToken(token.token);
+        console.log('Token has been refreshed');
+      }),
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = '';
+        if (error.status === 401 || error.status === 400) {
+          this.toastr.error('Wystąpił problem z odświeżeniem sesji');
+          this.logout();
+        } else if (error.status === 0) {
+          this.handleServerConnectionError();
+        }
+        errorMessage = error.error.message;
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    ).subscribe({
+      next: (response) => console.log('Response from refresh:', response),
+      error: (error) => console.log('Error from refresh:', error)
+  });
+  }
+
+  private handleServerConnectionError() {
+    this.errorStatusCode.next(0);
+    this.toastr.error('Wystąpił problem z połączeniem z serwerem');
+    this.logout();
+  }
+
+  private doLoginUser(email: string, token: string, stayLoggedInFlag: boolean) {
     this.isAuthenticatedSubject.next(true);
     this.errorStatusCode.next(200);
     this.storeJwtToken(token);
     this.storeUserEmail(email);
+    this.storeStayFlag(stayLoggedInFlag);
     this.toastr.success("Pomyślnie zalogowano jako " + email);
+  }
+
+  private storeStayFlag(flag: boolean) {
+    let stringFlag = 'false';
+    if (flag) {
+      stringFlag = 'true';
+    }
+    localStorage.setItem(this.STAY_LOGGEDIN_FLAG, stringFlag);
   }
 
   private storeUserEmail(email: string) {
@@ -116,3 +164,5 @@ export class AuthService {
     return localStorage.getItem(this.JWT_TOKEN);
   }
 }
+
+
