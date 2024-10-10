@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 
+// MDB Modules
 import { MdbAccordionModule } from 'mdb-angular-ui-kit/accordion';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { MdbCheckboxModule } from 'mdb-angular-ui-kit/checkbox';
@@ -20,14 +20,14 @@ import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
 import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 
-import { BrowserAnimationsModule, provideAnimations, provideNoopAnimations } from '@angular/platform-browser/animations';
-import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
 import { HttpClient, HttpClientModule, HttpHandler } from '@angular/common/http';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+import { RouterModule, Routes } from '@angular/router';
 import { authGuard, authGuardLogin } from './service/auth.guard.service';
-import { NavbarComponent } from "./components/navbar/navbar.component";
-import { provideToastr, ToastrModule } from 'ngx-toastr';
 import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent, canActivate: [authGuard]},
@@ -49,7 +49,6 @@ const routes: Routes = [
     MdbCollapseModule,
     MdbDropdownModule,
     MdbFormsModule,
-    ReactiveFormsModule,
     MdbModalModule,
     MdbPopoverModule,
     MdbRadioModule,
@@ -61,13 +60,8 @@ const routes: Routes = [
     MdbValidationModule,
     ToastrModule.forRoot(),
     RouterModule.forRoot(routes),
-    NavbarComponent
-],
-  providers: [
-    provideAnimations(),
-    provideToastr(),
-    provideNoopAnimations()
   ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

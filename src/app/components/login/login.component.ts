@@ -4,7 +4,6 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { inject } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { User } from 'src/app/common/user';
 
 import { AuthService } from 'src/app/service/auth.service';
 

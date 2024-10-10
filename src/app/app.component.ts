@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { inject } from '@angular/core';
 import { AuthService } from './service/auth.service';
-import { NavbarComponent } from './components/navbar/navbar.component';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 export class AppComponent {
   authService = inject(AuthService);
   router = inject(Router);
+  toastr = inject(ToastrService);
+  
   isLoggedIn! : boolean;
 
   ngOnInit() {
@@ -23,6 +25,13 @@ export class AppComponent {
 
     if (!this.isLoggedIn) {
       this.authService.logout(); 
+    }
+  }
+
+  logout() {
+    if (this.isLoggedIn) {
+      this.authService.logout();
+      this.toastr.info('Wylogowano pomyślnie');
     }
   }
 }
