@@ -28,9 +28,21 @@ import { RouterModule, Routes } from '@angular/router';
 import { authGuard, authGuardLogin } from './service/auth.guard.service';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { CustomSidenavComponent } from "./components/custom-sidenav/custom-sidenav.component";
+import { HospitalsComponent } from './components/hospitals/hospitals.component';
+import { DieticiansComponent } from './components/dieticians/dieticians.component';
+import { MealsComponent } from './components/meals/meals.component';
+
 
 const routes: Routes = [
   {path: '', component: HomeComponent, canActivate: [authGuard]},
+  {path: 'hospitals', component: HospitalsComponent, canActivate: [authGuard]},
+  {path: 'dieticians', component: DieticiansComponent, canActivate: [authGuard]},
+  {path: 'meals', component: MealsComponent, canActivate: [authGuard]},
   {path: 'login', component: LoginComponent, canActivate: [authGuardLogin]},
   {path: 'logout', component: LoginComponent, canActivate: [authGuardLogin]}
 ]
@@ -58,9 +70,14 @@ const routes: Routes = [
     MdbTabsModule,
     MdbTooltipModule,
     MdbValidationModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSidenavModule,
     ToastrModule.forRoot(),
     RouterModule.forRoot(routes),
-  ],
+    CustomSidenavComponent
+],
   providers: [],
   bootstrap: [AppComponent]
 })

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { inject } from '@angular/core';
 import { AuthService } from './service/auth.service';
 import { Router } from '@angular/router';
@@ -13,6 +13,10 @@ export class AppComponent {
   authService = inject(AuthService);
   router = inject(Router);
   toastr = inject(ToastrService);
+
+  collapsed = signal(false);
+
+  sidenavWidth = computed(() => this.collapsed() ? '65px' : '250px');
   
   isLoggedIn! : boolean;
 
@@ -25,13 +29,6 @@ export class AppComponent {
 
     if (!this.isLoggedIn) {
       this.authService.logout(); 
-    }
-  }
-
-  logout() {
-    if (this.isLoggedIn) {
-      this.authService.logout();
-      this.toastr.info('Wylogowano pomyślnie');
     }
   }
 }

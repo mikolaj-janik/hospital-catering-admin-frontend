@@ -1,0 +1,24 @@
+<div class="sidenav-header">
+    <img [width]="profilePicSize()" [height]="profilePicSize()" src="/assets/images/profile-pic.jpg">
+    <div class="header-text" [class.hide-header-text]="sideNavCollapsed()">
+        <h2>Administrator</h2>
+        <p>Mikołaj Janik</p>
+    </div>
+</div>
+<mat-nav-list>
+    <a 
+    class="menu-item"
+    mat-list-item 
+    *ngFor="let item of menuItems()" 
+    [routerLink]="item.route"
+    routerLinkActive="selected-menu-item"
+    #rla="routerLinkActive"
+    [activated]="rla.isActive">
+        <mat-icon [ngClass]="item.icon" matListItemIcon style="width: 30px;"></mat-icon>
+        <span matListItemTitle *ngIf="!sideNavCollapsed()">{{ item.label }}</span>    
+    </a>
+    <a class="menu-item" mat-list-item (click)="logout()"> 
+        <mat-icon class="fas fa-sign-out-alt" matListItemIcon style="width: 30px;"></mat-icon>
+        <span matListItemTitle *ngIf="!sideNavCollapsed()">Wyloguj się</span> 
+    </a>
+</mat-nav-list>  
