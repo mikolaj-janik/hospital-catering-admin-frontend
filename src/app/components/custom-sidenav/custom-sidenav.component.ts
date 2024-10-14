@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthService } from 'src/app/service/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { UserService } from 'src/app/service/user.service';
+import { User } from 'src/app/common/user';
 
 export type MenuItem = {
   icon: string;
@@ -24,8 +26,11 @@ export class CustomSidenavComponent {
 
   isLoggedIn! : boolean;
 
+  userService = inject(UserService);
   authService = inject(AuthService);
   toastr = inject(ToastrService);
+
+  currentUser: User;
 
   sideNavCollapsed = signal(false);
   @Input() set collapsed(val: boolean) {
@@ -38,9 +43,13 @@ export class CustomSidenavComponent {
         this.isLoggedIn = loggedIn;
       }
     );
-
-    this.sideNavCollapsed.set(false);
-
+    
+    this.userService.getCurrentUser().subscribe(
+      (user: User) => {
+        this.currentUser = user;
+      }
+    );
+    
     if (!this.isLoggedIn) {
       this.authService.logout(); 
     }
@@ -69,7 +78,6 @@ export class CustomSidenavComponent {
   logout() {
     if (this.isLoggedIn) {
       this.authService.logout();
-      this.sideNavCollapsed.set(false);
       this.toastr.info('Wylogowano pomyślnie');
     }
   }

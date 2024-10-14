@@ -121,6 +121,14 @@ export class AuthService {
   });
   }
 
+  getAuthHeaders(): HttpHeaders {
+    const token = this.getJwtToken();
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+  }
+
   private handleServerConnectionError() {
     this.errorStatusCode.next(0);
     this.toastr.error('Wystąpił problem z połączeniem z serwerem');
@@ -144,24 +152,20 @@ export class AuthService {
     localStorage.setItem(this.STAY_LOGGEDIN_FLAG, stringFlag);
   }
 
+  getUserEmail(): string | null {
+    return localStorage.getItem(this.USER_EMAIL);
+  }
+
+  getJwtToken(): string | null {
+    return localStorage.getItem(this.JWT_TOKEN);
+  }
+
   private storeUserEmail(email: string) {
     localStorage.setItem(this.USER_EMAIL, email);
   }
   
   private storeJwtToken(token: string) {
     localStorage.setItem(this.JWT_TOKEN, token);
-  }
-
-  private getAuthHeaders(): HttpHeaders {
-    const token = this.getJwtToken();
-    return new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    });
-  }
-
-  private getJwtToken(): string | null {
-    return localStorage.getItem(this.JWT_TOKEN);
   }
 }
 
