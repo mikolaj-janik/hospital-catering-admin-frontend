@@ -39,7 +39,7 @@ import { MealsComponent } from './components/meals/meals.component';
 
 
 const routes: Routes = [
-  {path: '', component: HomeComponent, canActivate: [authGuard]},
+  {path: '', component: HospitalsComponent, canActivate: [authGuard]},
   {path: 'hospitals', component: HospitalsComponent, canActivate: [authGuard]},
   {path: 'dieticians', component: DieticiansComponent, canActivate: [authGuard]},
   {path: 'meals', component: MealsComponent, canActivate: [authGuard]},
