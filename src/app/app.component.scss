@@ -10,6 +10,10 @@ mat-sidenav-container {
 mat-sidenav, mat-sidenav-content {
     transition: all 250ms ease-in-out;
 }
+
+app-search-bar {
+    transition: all 350ms ease-in-out;
+}
 .gradient-custom-2 {
     background: #ffd4a0;
     

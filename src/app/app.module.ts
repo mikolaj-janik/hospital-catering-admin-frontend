@@ -36,6 +36,9 @@ import { CustomSidenavComponent } from "./components/custom-sidenav/custom-siden
 import { HospitalsComponent } from './components/hospitals/hospitals.component';
 import { DieticiansComponent } from './components/dieticians/dieticians.component';
 import { MealsComponent } from './components/meals/meals.component';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { SearchOverlayComponent } from './components/search-overlay/search-overlay.component';
+import { CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
 
 
 const routes: Routes = [
@@ -76,7 +79,10 @@ const routes: Routes = [
     MatSidenavModule,
     ToastrModule.forRoot(),
     RouterModule.forRoot(routes),
-    CustomSidenavComponent
+    CustomSidenavComponent,
+    SearchBarComponent,
+    SearchOverlayComponent,
+    OverlayModule
 ],
   providers: [],
   bootstrap: [AppComponent]

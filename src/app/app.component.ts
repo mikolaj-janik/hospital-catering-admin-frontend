@@ -17,6 +17,7 @@ export class AppComponent {
   collapsed = signal(false);
 
   sidenavWidth = computed(() => this.collapsed() ? '65px' : '250px');
+  searchBarWidth = computed(() => this.collapsed() ? '5px': '200px');
   
   isLoggedIn! : boolean;
 

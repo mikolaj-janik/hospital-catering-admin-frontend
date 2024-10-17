@@ -13,10 +13,8 @@ import { environment } from 'src/environments/environment';
 export class HospitalService {
 
   constructor(
-    private routerService: Router,
     private authService: AuthService,
     private http: HttpClient,
-    private toastr: ToastrService 
   ) {}
 
   getAllHospitals(): Observable<Hospital[]> {

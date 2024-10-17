@@ -31,7 +31,6 @@ export class HospitalsComponent {
     this.hospitalService.getAllHospitals().subscribe(
       (hospitals: Hospital[]) => {
         this.hospitals = hospitals;
-        console.log(hospitals.length);
       }
     );
     
