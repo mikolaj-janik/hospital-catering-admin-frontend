@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, computed, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterModule, NavigationEnd } from '@angular/router';
 import { inject } from '@angular/core';
@@ -24,9 +24,11 @@ export class SearchBarComponent {
   activatedRoute = inject(ActivatedRoute);
 
   overlayOpen = this.searchBarService.overlayOpen;
-  recentSearches = this.searchBarService.recentSearches;
+  recentSearches = computed(() => this.searchBarService.recentSearches().slice(0, 5));
+  searchTerm = this.searchBarService.searchTerm;
 
   routePath = '';
+  paddingEnd = computed(() => this.searchTerm() ? '8px' : '56px');
 
   ngOnInit() {
     this.router.events
@@ -41,6 +43,7 @@ export class SearchBarComponent {
   }
 
   search(searchTerm: string) {
+    console.log(this.recentSearches().length);
     if (!searchTerm) 
       return;
 
@@ -72,5 +75,13 @@ export class SearchBarComponent {
     } else {
       return '';
     }
+  }
+  
+  clearSearch() {
+    this.searchTerm.set('');
+    if (this.recentSearches().length > 0) {
+      this.overlayOpen.set(true);
+    }
+    
   }
 }

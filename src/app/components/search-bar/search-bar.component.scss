@@ -3,7 +3,9 @@
 }
 
 .search-bar-container {
-    padding: 0px 56px 0px 8px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 12px;
     background: #ffffff;
     border-radius: 32px;
     display: flex;
@@ -20,6 +22,11 @@
     &.opened {
         background: white;
         border-radius: 32px 32px 0px 0px;
+    }
+
+    .close-button {
+        position: absolute;
+        top: 0;
     }
 }
 

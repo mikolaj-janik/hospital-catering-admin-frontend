@@ -14,6 +14,7 @@ export class SearchBarService {
 
   overlayOpen = signal(false);
   recentSearches = signal<string[]>([]);
+  searchTerm = signal('');
 
   routePath = '';
 
@@ -39,6 +40,8 @@ export class SearchBarService {
     const url = `${environment.apiUrl}/search?name=${searchTerm}`;
     const headers = this.authService.getAuthHeaders();
 
+    
+    this.searchTerm.set(searchTerm);
     this.overlayOpen.set(false);
     this.addHospitalNameToRecentSearches(searchTerm);
 
@@ -66,7 +69,7 @@ export class SearchBarService {
       
       this.recentSearches.set(updatedSearches);
       localStorage.setItem('recentHospitalSearches', JSON.stringify(updatedSearches));
-    }
+    } //TODO
   }
   addHospitalNameToRecentSearches(searchTerm: string) {
 
@@ -75,10 +78,6 @@ export class SearchBarService {
       lowerCaseTerm,
       ...this.recentSearches().filter(s => s !== lowerCaseTerm),
     ];
-
-    if (updatedSearches.length > 5) {
-      updatedSearches.pop();
-    }
 
     this.recentSearches.set(updatedSearches);
 
