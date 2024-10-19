@@ -44,6 +44,7 @@ import { CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
 const routes: Routes = [
   {path: '', component: HospitalsComponent, canActivate: [authGuard]},
   {path: 'hospitals', component: HospitalsComponent, canActivate: [authGuard]},
+  {path: 'hospitals/search/:keyword', component: HospitalsComponent, canActivate: [authGuard]},
   {path: 'dieticians', component: DieticiansComponent, canActivate: [authGuard]},
   {path: 'meals', component: MealsComponent, canActivate: [authGuard]},
   {path: 'login', component: LoginComponent, canActivate: [authGuardLogin]},

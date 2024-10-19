@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { Hospital } from '../common/hospital';
 import { environment } from 'src/environments/environment';
+import { SearchBarService } from './search-bar.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +15,24 @@ export class HospitalService {
 
   constructor(
     private authService: AuthService,
+    private searchBarService: SearchBarService,
     private http: HttpClient,
   ) {}
+
+  searchTerm = this.searchBarService.searchTerm;
 
   getAllHospitals(): Observable<Hospital[]> {
     const headers = this.authService.getAuthHeaders();
     const url = `${environment.apiUrl}/hospitals`;
 
+    return this.http.get<GetResponseHospitals>(url, { headers }).pipe(map(
+      response => response.content
+    ));
+  }
+
+  getHospitalsByName(searchTerm: string): Observable<Hospital[]> {
+    const url = `${environment.apiUrl}/hospitals/search?name=${searchTerm}`;
+    const headers = this.authService.getAuthHeaders();
     return this.http.get<GetResponseHospitals>(url, { headers }).pipe(map(
       response => response.content
     ));

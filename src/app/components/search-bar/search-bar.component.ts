@@ -43,11 +43,10 @@ export class SearchBarComponent {
   }
 
   search(searchTerm: string) {
-    console.log(this.recentSearches().length);
     if (!searchTerm) 
       return;
 
-    if (this.routePath === '' || this.routePath === 'hospitals') {
+    if (this.routePath === '' || this.routePath === 'hospitals' || this.routePath === 'hospitals/search/:keyword') {
       this.searchBarService.searchHospital(searchTerm);
     }
     
@@ -60,13 +59,13 @@ export class SearchBarComponent {
     } else {
       this.overlayOpen.set(false);
     }
-    if (this.routePath === '' || this.routePath === 'hospitals') {
+    if (this.routePath === '' || this.routePath === 'hospitals' || this.routePath === 'hospitals/search/:keyword') {
       this.searchBarService.getRecentHospitalSearches();
     } 
   }
 
   handleSearchContent() {
-    if (this.routePath === '' || this.routePath === 'hospitals') {
+    if (this.routePath === '' || this.routePath === 'hospitals' || this.routePath === 'hospitals/search/:keyword') {
       return 'Szukaj szpitali';
     } else if (this.routePath === 'dieticians') {
       return 'Szukaj dietetyków';
