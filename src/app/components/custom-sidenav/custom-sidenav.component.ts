@@ -8,17 +8,19 @@ import { AuthService } from 'src/app/service/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/service/user.service';
 import { User } from 'src/app/common/user';
+import { MenuItemComponent } from '../menu-item/menu-item.component';
 
 export type MenuItem = {
   icon: string;
   label: string;
   route: string;
+  subItems?: MenuItem[];
 }
 
 @Component({
   selector: 'app-custom-sidenav',
   standalone: true,
-  imports: [CommonModule, MatListModule, MatIconModule, RouterModule],
+  imports: [CommonModule, MatListModule, MatIconModule, RouterModule, MenuItemComponent],
   templateUrl: './custom-sidenav.component.html',
   styleUrl: './custom-sidenav.component.scss'
 })
@@ -59,7 +61,14 @@ export class CustomSidenavComponent {
     {
       icon: 'fas fa-hospital-alt',
       label: 'Szpitale',
-      route: 'hospitals'
+      route: 'hospitals',
+      subItems: [
+        {
+          icon: 'far fa-hospital',
+          label: 'Dodaj szpital',
+          route: 'add',
+        }
+      ]
     },
     {
       icon: 'fas fa-users',

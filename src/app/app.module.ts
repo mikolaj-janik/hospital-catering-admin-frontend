@@ -22,7 +22,7 @@ import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 
 import { HttpClient, HttpClientModule, HttpHandler } from '@angular/common/http';
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { RouterModule, Routes } from '@angular/router';
 import { authGuard, authGuardLogin } from './service/auth.guard.service';
@@ -39,12 +39,14 @@ import { MealsComponent } from './components/meals/meals.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { SearchOverlayComponent } from './components/search-overlay/search-overlay.component';
 import { CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
+import { NewHospitalComponent } from './components/new-hospital/new-hospital.component';
 
 
 const routes: Routes = [
   {path: '', component: HospitalsComponent, canActivate: [authGuard]},
   {path: 'hospitals', component: HospitalsComponent, canActivate: [authGuard]},
   {path: 'hospitals/search/:keyword', component: HospitalsComponent, canActivate: [authGuard]},
+  {path: 'hospitals/add', component: NewHospitalComponent, canActivate: [authGuard]},
   {path: 'dieticians', component: DieticiansComponent, canActivate: [authGuard]},
   {path: 'meals', component: MealsComponent, canActivate: [authGuard]},
   {path: 'login', component: LoginComponent, canActivate: [authGuardLogin]},

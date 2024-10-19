@@ -6,17 +6,10 @@
     </div>
 </div>
 <mat-nav-list>
-    <a 
-    class="menu-item"
-    mat-list-item 
-    *ngFor="let item of menuItems()" 
-    [routerLink]="item.route"
-    routerLinkActive="selected-menu-item"
-    #rla="routerLinkActive"
-    [activated]="rla.isActive">
-        <mat-icon [ngClass]="item.icon" matListItemIcon style="width: 30px;"></mat-icon>
-        <span matListItemTitle *ngIf="!sideNavCollapsed()">{{ item.label }}</span>    
-    </a>
+    @for(item of menuItems(); track item.label) {
+        <app-menu-item [item]="item" [collapsed]="sideNavCollapsed()"></app-menu-item>
+    }
+    
     <a class="menu-item" mat-list-item (click)="logout()"> 
         <mat-icon class="fas fa-sign-out-alt" matListItemIcon style="width: 30px;"></mat-icon>
         <span matListItemTitle *ngIf="!sideNavCollapsed()">Wyloguj się</span> 
