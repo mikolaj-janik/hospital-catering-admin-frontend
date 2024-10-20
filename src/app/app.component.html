@@ -4,7 +4,10 @@
       <button mat-icon-button (click)="collapsed.set(!collapsed())">
         <mat-icon class="fas fa-bars"></mat-icon>
       </button>
-      <app-search-bar [style.margin-left]="searchBarWidth()"></app-search-bar>
+      @if(this.activateSearchBar()) {
+        <app-search-bar [style.margin-left]="searchBarWidth()"></app-search-bar>
+      }
+      
     </mat-toolbar>
     <mat-sidenav-container>
       <mat-sidenav opened mode="side" [style.width]="sidenavWidth()">

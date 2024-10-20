@@ -22,7 +22,7 @@ import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 
 import { HttpClient, HttpClientModule, HttpHandler } from '@angular/common/http';
 
-import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { RouterModule, Routes } from '@angular/router';
 import { authGuard, authGuardLogin } from './service/auth.guard.service';
@@ -32,6 +32,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatInputModule } from '@angular/material/input';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CustomSidenavComponent } from "./components/custom-sidenav/custom-sidenav.component";
 import { HospitalsComponent } from './components/hospitals/hospitals.component';
 import { DieticiansComponent } from './components/dieticians/dieticians.component';
@@ -80,6 +85,11 @@ const routes: Routes = [
     MatButtonModule,
     MatIconModule,
     MatSidenavModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatCheckboxModule,
     ToastrModule.forRoot(),
     RouterModule.forRoot(routes),
     CustomSidenavComponent,
@@ -87,7 +97,12 @@ const routes: Routes = [
     SearchOverlayComponent,
     OverlayModule
 ],
-  providers: [],
+  providers: [
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'outline', subscriptSizing: 'dynamic'}
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
