@@ -1,6 +1,6 @@
 <h2>Dodaj nowy szpital</h2>
 <hr>
-<div class="container-fluid d-flex justify-content-center mt-5">
+<div class="container-fluid d-flex justify-content-center">
     <div class="card col-lg-7 col-md-9 col-sm-12 px-4" style="padding-top: 35px; padding-bottom: 20px;">
         <form [formGroup]="newHospitalForm" (ngSubmit)="addNewHospital()">
             <span>
@@ -27,6 +27,9 @@
                     @if(newHospitalForm.get('phoneNumber')?.errors?.['required'] && (newHospitalForm.get('phoneNumber')?.dirty || newHospitalForm.get('phoneNumber')?.touched)) {
                         <mat-error>Numer telefonu jest wymagany</mat-error>
                     }
+                    @if(newHospitalForm.get('phoneNumber')?.errors?.['pattern'] && (newHospitalForm.get('phoneNumber')?.dirty || newHospitalForm.get('phoneNumber')?.touched)) {
+                        <mat-error>To nie jest numer telefonu!</mat-error>
+                    }
                 </mat-form-field>
             </p>
             <span>
@@ -42,6 +45,11 @@
                             Ulica jest wymagana
                         </mat-error>
                     }
+                    @if(newHospitalForm.get('street')?.errors?.['pattern'] && (newHospitalForm.get('street')?.dirty || newHospitalForm.get('street')?.touched)) {
+                        <mat-error style="position: absolute; bottom: -20px;">
+                            Wielka litera na początku wymagana
+                        </mat-error>
+                    }
                 </mat-form-field>
                 <mat-form-field class="flex-fill">
                     <mat-label>Numer budynku</mat-label>
@@ -50,6 +58,11 @@
                     @if(newHospitalForm.get('buildingNo')?.errors?.['required'] && (newHospitalForm.get('buildingNo')?.dirty || newHospitalForm.get('buildingNo')?.touched)) {
                         <mat-error style="position: absolute; bottom: -20px;">
                             Numer budynku jest wymagany
+                        </mat-error>
+                    }
+                    @if(newHospitalForm.get('buildingNo')?.errors?.['min'] && (newHospitalForm.get('buildingNo')?.dirty || newHospitalForm.get('buildingNo')?.touched)) {
+                        <mat-error style="position: absolute; bottom: -20px;">
+                            Wymagana minimalna wartość to 1
                         </mat-error>
                     }
                 </mat-form-field>
@@ -80,8 +93,33 @@
                             Miasto jest wymagane
                         </mat-error>
                     }
+                    @if(newHospitalForm.get('city')?.errors?.['pattern'] && (newHospitalForm.get('city')?.dirty || newHospitalForm.get('city')?.touched)) {
+                        <mat-error style="position: absolute; bottom: -20px;">
+                            Wielka litera na początku wymagana
+                        </mat-error>
+                    }
                 </mat-form-field>
             </p>
+
+            <div class="mb-5">
+                <label for="formFileLg" class="form-label">Zdjęcie szpitala</label>
+                <input class="form-control form-control-lg mb-3" id="formFileLg" type="file" (change)="handleFileUpload($event)">
+                @if(!uploadedPicture) {
+                    <div class="alert alert-danger mt-1">
+                        <span>Zdjęcie szpitala musi zostać dołączone</span>
+                    </div>
+                }
+                @if(!isUploadedOnlyOneFile) {
+                    <div class="alert alert-danger mt-1">
+                        <span>Możesz dołączyć tylko jedno zdjęcie!</span>
+                    </div>
+                }
+                @if(!isValidFileFormat) {
+                    <div class="alert alert-danger mt-1">
+                        <span>Plik musi być w formacie jpg, jpeg lub png</span>
+                    </div>
+                }
+            </div>
             <p class="d-flex justify-content-center">
                 <button mat-flat-button class="btn btn-primary" type="submit">Zarejestruj nowy szpital</button>
             </p>

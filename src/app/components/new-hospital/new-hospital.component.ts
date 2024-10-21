@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { HospitalService } from 'src/app/service/hospital.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-new-hospital',
@@ -24,24 +26,78 @@ export class NewHospitalComponent {
   buildingNo = 0;
   zipCode = '';
   city = '';
-  picture = '';  
+  picture: any;
+
+  uploadedPicture = true;
+  isUploadedOnlyOneFile = true;
+  isValidFileFormat = true;
+  phoneExtension = '+48 ';
 
   zipCodePattern = '[0-9]{2}-[0-9]{3}';
+  phoneNumberPattern = '^(?:\\d\\s?){9,12}$';
+  camelCasePattern = '^[A-Z].*$';
+
+  hospitalService = inject(HospitalService);
+  toastr = inject(ToastrService);
+  router = inject(Router);
 
   newHospitalForm = new FormGroup({
     name: new FormControl(this.name, [Validators.required]),
-    phoneNumber: new FormControl(this.phoneNumber, [Validators.required, Validators.minLength(9)]),
-    street: new FormControl(this.street, [Validators.required]),
+    phoneNumber: new FormControl(this.phoneNumber, [Validators.required, Validators.pattern(this.phoneNumberPattern)]),
+    street: new FormControl(this.street, [Validators.required, Validators.pattern(this.camelCasePattern)]),
     zipCode: new FormControl(this.zipCode, [Validators.required, Validators.pattern(this.zipCodePattern)]),
-    buildingNo: new FormControl(this.buildingNo, [Validators.required]),
-    city: new FormControl(this.city, [Validators.required]),
+    buildingNo: new FormControl(this.buildingNo, [Validators.required, Validators.min(1)]),
+    city: new FormControl(this.city, [Validators.required, Validators.pattern(this.camelCasePattern)]),
   });
+
+  handleFileUpload(event: any) {
+    if (event.target.files.length === 1) {
+      const file = event.target.files[0];
+      const validImageTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+
+      if (validImageTypes.includes(file.type)) {
+        this.uploadedPicture = true;
+        this.isValidFileFormat = true;
+        this.picture = file;
+      } else {
+        this.isValidFileFormat = false;
+      }
+    }
+    else if (event.target.files.length > 1) {
+      this.isUploadedOnlyOneFile = false;
+    }
+  }
 
   addNewHospital() {
     if (this.newHospitalForm.valid) {
-      console.log('TODO');
+      if (this.picture != null) {
+        this.uploadedPicture = true;
+        const formData = new FormData();
+
+        formData.append('name', this.newHospitalForm.get('name')?.value);
+        formData.append('phoneNumber', this.phoneExtension + this.newHospitalForm.get('phoneNumber')?.value);
+        formData.append('street', this.newHospitalForm.get('street')?.value);
+        formData.append('buildingNo', this.newHospitalForm.get('buildingNo')?.value.toString());
+        formData.append('zipCode', this.newHospitalForm.get('zipCode')?.value);
+        formData.append('city', this.newHospitalForm.get('city')?.value);
+        formData.append('picture', this.picture);
+
+        this.hospitalService.addNewHospital(formData).subscribe({
+          next: () => {
+            this.toastr.success('Szpital został pomyślnie dodany!');
+            this.router.navigate(['hospitals']);
+          },
+          error: (error) => {
+            console.error('Błąd:', error);
+          }
+        });
+      }
+      else {
+        this.uploadedPicture = false;
+        this.toastr.error('Formularz nie został poprawnie wypełniony');
+      }
     } else {
-      console.log('Form not valid!');
+      this.toastr.error('Formularz nie został poprawnie wypełniony');
     }
   }
 }

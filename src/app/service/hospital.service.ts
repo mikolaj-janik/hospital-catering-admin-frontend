@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { Hospital } from '../common/hospital';
 import { environment } from 'src/environments/environment';
 import { SearchBarService } from './search-bar.service';
@@ -17,6 +17,7 @@ export class HospitalService {
     private authService: AuthService,
     private searchBarService: SearchBarService,
     private http: HttpClient,
+    private toastr: ToastrService 
   ) {}
 
   searchTerm = this.searchBarService.searchTerm;
@@ -28,6 +29,26 @@ export class HospitalService {
     return this.http.get<GetResponseHospitals>(url, { headers }).pipe(map(
       response => response.content
     ));
+  }
+
+  addNewHospital(formData: FormData): Observable<any> {
+    const headers = this.authService.getAuthHeadersWithFile();
+
+    return this.http
+    .post(`${environment.apiUrl}/hospitals/add`, formData, { headers })
+    .pipe(
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = '';
+       if (error.status === 0) {
+          this.authService.handleServerConnectionError();
+        } else {
+          this.toastr.error('Wystąpił problem z dodawaniem szpitala');
+        }
+        errorMessage = error.error.message;
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
   }
 
   getHospitalsByName(searchTerm: string): Observable<Hospital[]> {

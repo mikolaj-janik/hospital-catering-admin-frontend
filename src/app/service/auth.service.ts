@@ -41,7 +41,7 @@ export class AuthService {
           this.handleServerConnectionError();
         }
         errorMessage = error.error.message;
-        console.log(errorMessage);
+        console.error(errorMessage);
         return throwError(() => new Error(errorMessage));
       })
     );
@@ -129,7 +129,14 @@ export class AuthService {
     });
   }
 
-  private handleServerConnectionError() {
+  getAuthHeadersWithFile(): HttpHeaders {
+    const token = this.getJwtToken();
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
+
+  handleServerConnectionError() {
     this.errorStatusCode.next(0);
     this.toastr.error('Wystąpił problem z połączeniem z serwerem');
     this.logout();
