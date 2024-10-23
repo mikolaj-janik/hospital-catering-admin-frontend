@@ -158,6 +158,11 @@ export class AuthService {
     }
     localStorage.setItem(this.STAY_LOGGEDIN_FLAG, stringFlag);
   }
+  
+  handleError() {
+    this.toastr.error('Wystąpił nieoczekiwany problem');
+    this.logout();
+  }
 
   getUserEmail(): string | null {
     return localStorage.getItem(this.USER_EMAIL);

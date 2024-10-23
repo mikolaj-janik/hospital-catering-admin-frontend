@@ -78,7 +78,19 @@ export class CustomSidenavComponent {
     {
       icon: 'fas fa-utensils',
       label: 'Posiłki',
-      route: 'meals'
+      route: 'meals',
+      subItems: [
+        {
+          icon: 'fas fa-carrot',
+          label: 'Diety',
+          route: 'diets',
+        },
+        {
+          icon: 'far fa-calendar-plus',
+          label: 'Dodaj dietę',
+          route: 'addDiet',
+        },
+      ]
     }
   ]);
 

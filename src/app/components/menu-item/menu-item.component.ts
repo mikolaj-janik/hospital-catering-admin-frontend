@@ -48,11 +48,11 @@ export class MenuItemComponent {
       });
   }
 
-  toggleNested(itemRoute: string) {
+  toggleNested() {
     if (!this.item().subItems) {
       return;
     }
-
+    
     this.nestedMenuOpen.set(!this.nestedMenuOpen());
   }
 }

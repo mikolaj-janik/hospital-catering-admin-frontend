@@ -45,6 +45,8 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
 import { SearchOverlayComponent } from './components/search-overlay/search-overlay.component';
 import { CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
 import { NewHospitalComponent } from './components/new-hospital/new-hospital.component';
+import { DietComponent } from './components/diet/diet.component';
+import { NewDietComponent } from './components/new-diet/new-diet.component';
 
 
 const routes: Routes = [
@@ -54,6 +56,8 @@ const routes: Routes = [
   {path: 'hospitals/add', component: NewHospitalComponent, canActivate: [authGuard]},
   {path: 'dieticians', component: DieticiansComponent, canActivate: [authGuard]},
   {path: 'meals', component: MealsComponent, canActivate: [authGuard]},
+  {path: 'meals/diets', component: DietComponent, canActivate: [authGuard]},
+  {path: 'meals/addDiet', component: NewDietComponent, canActivate: [authGuard]},
   {path: 'login', component: LoginComponent, canActivate: [authGuardLogin]},
   {path: 'logout', component: LoginComponent, canActivate: [authGuardLogin]}
 ]
