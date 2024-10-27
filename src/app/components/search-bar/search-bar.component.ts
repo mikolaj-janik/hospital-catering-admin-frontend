@@ -3,11 +3,12 @@ import { Component, computed, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterModule, NavigationEnd } from '@angular/router';
 import { inject } from '@angular/core';
-import { filter } from 'rxjs/operators';
+import { filter, switchMap } from 'rxjs/operators';
 import { MatIconButton } from '@angular/material/button';
 import { OverlayModule, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { SearchBarService } from 'src/app/service/search-bar.service';
 import { SearchOverlayComponent } from '../search-overlay/search-overlay.component';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-search-bar',
@@ -27,59 +28,60 @@ export class SearchBarComponent {
   recentSearches = computed(() => this.searchBarService.recentSearches().slice(0, 5));
   searchTerm = this.searchBarService.searchTerm;
 
-  routePath = '';
+  private routePathSubject = new BehaviorSubject<string>('');
+  routePath$: Observable<string> = this.routePathSubject.asObservable();
   paddingEnd = computed(() => this.searchTerm() ? '8px' : '56px');
 
   ngOnInit() {
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        let currentRoute = this.activatedRoute.root;
-        while(currentRoute.firstChild) {
-          currentRoute = currentRoute.firstChild;
-        }
-        this.routePath = currentRoute.snapshot.routeConfig?.path;
-      });
+    this.routePathSubject.next(this.router.url);
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.routePathSubject.next(this.router.url);
+    });
   }
 
   search(searchTerm: string) {
     if (!searchTerm) 
       return;
 
-    if (this.routePath === '' || this.routePath === 'hospitals' || this.routePath === 'hospitals/search/:keyword') {
+    const routePath = this.routePathSubject.value;
+    if (routePath === '' || routePath === '/hospitals' || routePath.startsWith('/hospitals/search')) {
       this.searchBarService.searchHospital(searchTerm);
-
-    } else if (this.routePath === 'meals/diets' || this.routePath === 'meals/diets/search/:keyword') {
+  
+    } else if (routePath === '/meals/diets' || routePath.startsWith('/meals/diets/search')) {
       this.searchBarService.searchDiet(searchTerm);
-
+  
     }
-    
   }
 
   handleClickedInput() {
-    const searches = this.recentSearches()
+    const searches = this.recentSearches();
     if (searches.length > 0) {
       this.overlayOpen.set(true);
     } else {
       this.overlayOpen.set(false);
     }
-    if (this.routePath === '' || this.routePath === 'hospitals' || this.routePath === 'hospitals/search/:keyword') {
+
+    const routePath = this.routePathSubject.value;
+    
+    if (routePath === '' || routePath === '/hospitals' || routePath.startsWith('/hospitals/search')) {
       this.searchBarService.getRecentHospitalSearches();
-
-    } else if (this.routePath === 'meals/diets' || this.routePath === 'meals/diets/search/:keyword') {
+  
+    } else if (routePath === '/meals/diets' || routePath.startsWith('/meals/diets/search')) {
       this.searchBarService.getRecentDietsSearches();
-
+  
     }
   }
 
-  handleSearchContent() {
-    if (this.routePath === '' || this.routePath === 'hospitals' || this.routePath === 'hospitals/search/:keyword') {
+  handleSearchContent(routePath: string): string {
+    if (routePath === '' || routePath === '/hospitals' || routePath.startsWith('/hospitals/search')) {
       return 'Szukaj szpitali';
-    } else if (this.routePath === 'meals/diets' || this.routePath === 'meals/diets/search/:keyword') {
+    } else if (routePath === '/meals/diets' || routePath.startsWith('/meals/diets/search')) {
       return 'Szukaj diet';
-    } else if (this.routePath === 'dieticians') {
+    } else if (routePath === '/dieticians') {
       return 'Szukaj dietetyków';
-    } else if (this.routePath === 'meals') {
+    } else if (routePath === '/meals') {
       return 'Szukaj posiłków';
     } else {
       return '';

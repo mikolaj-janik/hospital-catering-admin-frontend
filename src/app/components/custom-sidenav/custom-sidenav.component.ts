@@ -90,6 +90,11 @@ export class CustomSidenavComponent {
           label: 'Dodaj dietę',
           route: 'addDiet',
         },
+        {
+          icon: 'far fa-calendar-alt',
+          label: 'Jadłospis',
+          route: ''
+        }
       ]
     }
   ]);

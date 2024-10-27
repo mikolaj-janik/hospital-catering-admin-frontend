@@ -13,7 +13,7 @@ import { filter } from 'rxjs';
 export class AppComponent {
   authService = inject(AuthService);
   router = inject(Router);
-  activatedRoute = inject(ActivatedRoute);
+  route = inject(ActivatedRoute);
   toastr = inject(ToastrService);
 
   collapsed = signal(false);
@@ -32,15 +32,11 @@ export class AppComponent {
       }
     );
 
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        let currentRoute = this.activatedRoute.root;
-        while(currentRoute.firstChild) {
-          currentRoute = currentRoute.firstChild;
-        }
-        this.routePath = currentRoute.snapshot.routeConfig?.path;
-      });
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+          this.routePath = this.router.url;
+      }
+    });
 
     if (!this.isLoggedIn) {
       this.authService.logout(); 
@@ -48,9 +44,9 @@ export class AppComponent {
   }
 
   activateSearchBar() {
-    if (this.routePath === '' || this.routePath === 'hospitals' || this.routePath === 'hospitals/search/:keyword'
+    if (this.routePath === '' || this.routePath === '/hospitals' || this.routePath.startsWith('/hospitals/search/')
     || this.routePath === 'dieticians'
-    || this.routePath === 'meals/diets' || this.routePath === 'meals/diets/search/:keyword'
+    || this.routePath === '/meals/diets' || this.routePath.startsWith('/meals/diets/search')
     ) {
       return true;
     }

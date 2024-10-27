@@ -4,7 +4,6 @@
     [routerLink]="item().route"
     routerLinkActive="selected-menu-item"
     #rla="routerLinkActive"
-    (click)="toggleNested()"
     [activated]="rla.isActive"
     >
         <mat-icon [ngClass]="item().icon" matListItemIcon style="width: 30px;"></mat-icon>
@@ -15,9 +14,14 @@
         @if(item().subItems) {
             <span matListItemMeta>
                 @if(nestedMenuOpen()) {
-                    <i class="fas fa-angle-up me-2"></i>
+                    <a (click)="toggleNested()">
+                        <i class="fas fa-angle-up me-2"></i>
+                    </a>
+                    
                 } @else {
-                    <i class="fas fa-angle-down me-2"></i>
+                    <a (click)="toggleNested()">
+                        <i class="fas fa-angle-down me-2"></i>
+                    </a>
                 }
             </span>
         }

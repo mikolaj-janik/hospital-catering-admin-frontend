@@ -4,7 +4,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
-import { filter, map, Observable } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HospitalService } from './hospital.service';
 
@@ -22,19 +22,19 @@ export class SearchBarService {
   private readonly recentHospitalSearches = 'recentHospitalSearches';
   private readonly recentDietSearches = 'recentDietSearches';
 
+  private routePathSubject = new BehaviorSubject<string>('');
+  routePath$: Observable<string> = this.routePathSubject.asObservable();
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        let currentRoute = this.activatedRoute.root;
-        while(currentRoute.firstChild) {
-          currentRoute = currentRoute.firstChild;
-        }
-        this.routePath = currentRoute.snapshot.routeConfig?.path;
-      });
+    this.routePathSubject.next(this.router.url);
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(event => {
+      this.routePathSubject.next(this.router.url);
+    });
   }
 
   searchHospital(searchTerm: string) {
@@ -54,9 +54,9 @@ export class SearchBarService {
   }
 
   getRecentHospitalSearches() {
-    if (this.routePath === '' || this.routePath === 'hospitals' || this.routePath === 'hospitals/search/:keyword') {
+    const routePath = this.routePathSubject.value;
+    if (routePath === '' || routePath === '/hospitals' || routePath.startsWith('/hospitals/search')) {
       let searches = localStorage.getItem(this.recentHospitalSearches);
-
       if (searches) {
         this.recentSearches.set(JSON.parse(searches));
       } 
@@ -64,7 +64,8 @@ export class SearchBarService {
   }
 
   getRecentDietsSearches() {
-    if (this.routePath === 'meals/diets' || this.routePath === 'meals/diets/:keyword') {
+    const routePath = this.routePathSubject.value;
+    if (routePath === '/meals/diets' || routePath.startsWith('/meals/diets/search')) {
       let searches = localStorage.getItem(this.recentDietSearches);
 
       if (searches) {
@@ -74,11 +75,12 @@ export class SearchBarService {
   } // TODO similar methods with meals, users etc
 
   deleteRecentSearch(searchTerm: string) {
-    if (this.routePath === '' || this.routePath === 'hospitals' || this.routePath === 'hospitals/search/:keyword') {
+    const routePath = this.routePathSubject.value;
+    if (routePath === '' || routePath === '/hospitals' || routePath.startsWith('/hospitals/search')) {
       const updatedSearches = this.handleDeleteSearch(searchTerm);
       localStorage.setItem(this.recentHospitalSearches, JSON.stringify(updatedSearches));
 
-    } else if (this.routePath === 'meals/diets' || this.routePath === 'meals/diets/search/:keyword') {
+    } else if (routePath === '/meals/diets' || routePath.startsWith('/meals/diets/search')) {
       const updatedSearches = this.handleDeleteSearch(searchTerm);
       localStorage.setItem(this.recentDietSearches, JSON.stringify(updatedSearches));
     }

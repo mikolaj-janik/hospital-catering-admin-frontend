@@ -3,13 +3,13 @@
     cdkOverlayOrigin
     #overlayOrigin="cdkOverlayOrigin" 
     [ngClass]="{'opened mat-elevation-z2': overlayOpen()}">
-    <button mat-icon-button>
+    <button mat-icon-button (click)="search(searchInput.value)">
         <mat-icon class="fas fa-search"></mat-icon>
     </button>
     <input 
     #searchInput 
     [value]="searchTerm()"
-    [placeholder]="handleSearchContent()" 
+    [placeholder]="handleSearchContent(routePath$ | async)" 
     (click)="handleClickedInput()"
     (keydown.ENTER)="search(searchInput.value)"
     />

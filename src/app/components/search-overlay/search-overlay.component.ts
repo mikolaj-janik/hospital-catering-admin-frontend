@@ -6,7 +6,8 @@ import { SearchBarService } from 'src/app/service/search-bar.service';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { ActivatedRoute, NavigationEnd, Router, Event } from '@angular/router';
-import { filter } from 'rxjs';
+import { Location } from '@angular/common';
+import { BehaviorSubject, filter, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-search-overlay',
@@ -18,18 +19,19 @@ import { filter } from 'rxjs';
 export class SearchOverlayComponent {
   searchBarService = inject(SearchBarService);
   router = inject(Router);
-  activatedRoute = inject(ActivatedRoute);
 
+  private routePathSubject = new BehaviorSubject<string>('');
+  routePath$: Observable<string> = this.routePathSubject.asObservable();
   recentSearches = computed(() => this.searchBarService.recentSearches().slice(0, 5));
 
-  routePath = '';
 
   ngOnInit() {
-    this.router.events
-      .pipe(filter((event: Event): event is NavigationEnd => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        this.routePath = event.urlAfterRedirects;
-      });
+    this.routePathSubject.next(this.router.url);
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(event => {
+      this.routePathSubject.next(this.router.url);
+    });
   }
 
   deleteRecentSearch(searchTerm: string) {
@@ -37,11 +39,12 @@ export class SearchOverlayComponent {
   }
 
   performSearch(searchTerm: string) {
-    console.log('routePath is ' + this.routePath);
-    if (this.routePath === '' || this.routePath === 'hospitals') {
+    const routePath = this.routePathSubject.value;
+    console.log('routePath is ' + routePath);
+    if (routePath === '' || routePath === '/hospitals' || routePath.startsWith('/hospitals/search/')) {
       this.searchBarService.searchHospital(searchTerm);
 
-    } else if (this.routePath === 'meals/diets' || this.routePath === 'meals/diets/search/:keyword') {
+    } else if (routePath === '/meals/diets' || routePath.startsWith('/meals/diets/search/')) {
       this.searchBarService.searchDiet(searchTerm);
     }
   }
