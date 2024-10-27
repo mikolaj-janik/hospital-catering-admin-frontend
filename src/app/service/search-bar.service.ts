@@ -19,6 +19,9 @@ export class SearchBarService {
 
   routePath = '';
 
+  private readonly recentHospitalSearches = 'recentHospitalSearches';
+  private readonly recentDietSearches = 'recentDietSearches';
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute
@@ -34,7 +37,6 @@ export class SearchBarService {
       });
   }
 
-
   searchHospital(searchTerm: string) {
     this.searchTerm.set(searchTerm);
     this.overlayOpen.set(false);
@@ -43,29 +45,58 @@ export class SearchBarService {
     this.router.navigate([`hospitals/search/${searchTerm}`]);
   }
 
+  searchDiet(searchTerm: string) {
+    this.searchTerm.set(searchTerm);
+    this.overlayOpen.set(false);
+    this.addDietNameToRecentSearches(searchTerm);
+    console.log(searchTerm);
+    this.router.navigate([`meals/diets/search/${searchTerm}`]);
+  }
+
   getRecentHospitalSearches() {
     if (this.routePath === '' || this.routePath === 'hospitals' || this.routePath === 'hospitals/search/:keyword') {
-      let searches = localStorage.getItem("recentHospitalSearches");
+      let searches = localStorage.getItem(this.recentHospitalSearches);
+
       if (searches) {
         this.recentSearches.set(JSON.parse(searches));
       } 
-    } //TODO handling dieticians, meals etc.
+    }
   }
+
+  getRecentDietsSearches() {
+    if (this.routePath === 'meals/diets' || this.routePath === 'meals/diets/:keyword') {
+      let searches = localStorage.getItem(this.recentDietSearches);
+
+      if (searches) {
+        this.recentSearches.set(JSON.parse(searches));
+      }
+    }
+  } // TODO similar methods with meals, users etc
 
   deleteRecentSearch(searchTerm: string) {
     if (this.routePath === '' || this.routePath === 'hospitals' || this.routePath === 'hospitals/search/:keyword') {
-      const updatedSearches = this.recentSearches().filter(s => s !== searchTerm);
+      const updatedSearches = this.handleDeleteSearch(searchTerm);
+      localStorage.setItem(this.recentHospitalSearches, JSON.stringify(updatedSearches));
 
-      if (updatedSearches.length === 0) {
-        this.overlayOpen.set(false);
-      }
-      
-      this.recentSearches.set(updatedSearches);
-      localStorage.setItem('recentHospitalSearches', JSON.stringify(updatedSearches));
-    } //TODO
+    } else if (this.routePath === 'meals/diets' || this.routePath === 'meals/diets/search/:keyword') {
+      const updatedSearches = this.handleDeleteSearch(searchTerm);
+      localStorage.setItem(this.recentDietSearches, JSON.stringify(updatedSearches));
+    }
   }
-  addHospitalNameToRecentSearches(searchTerm: string) {
 
+  addHospitalNameToRecentSearches(searchTerm: string) {
+    const updatedSearches = this.handleAddNameToRecentSearches(searchTerm);
+
+    localStorage.setItem(this.recentHospitalSearches, JSON.stringify(updatedSearches));
+  }
+
+  addDietNameToRecentSearches(searchTerm: string) {
+    const updatedSearches = this.handleAddNameToRecentSearches(searchTerm);
+
+    localStorage.setItem(this.recentDietSearches, JSON.stringify(updatedSearches));
+  }
+  
+  private handleAddNameToRecentSearches(searchTerm: string) {
     const lowerCaseTerm = searchTerm.toLowerCase();
     const updatedSearches = [
       lowerCaseTerm,
@@ -73,35 +104,18 @@ export class SearchBarService {
     ];
 
     this.recentSearches.set(updatedSearches);
-
-    localStorage.setItem('recentHospitalSearches', JSON.stringify(updatedSearches));
+    return updatedSearches;
   }
-}
-interface GetResponseHospitals {
-  totalElements: number,
-  totalPages: number,
-  size: number,
-  content: Hospital[],
-  number: number,
-  sort: {
-    empty: boolean,
-    sorted: boolean,
-    unsorted: boolean
-  },
-  numberOfElements: number,
-  first: boolean,
-  last: boolean,
-  pageable: {
-    pageNumber: number,
-    pageSize: number,
-    sort: {
-      empty: boolean,
-      sorted: boolean,
-      unsorted: boolean
-    },
-    offset: number,
-    paged: boolean,
-    unpaged: boolean
-  },
-  empty: boolean
+
+  private handleDeleteSearch(searchTerm: string) {
+    const updatedSearches = this.recentSearches().filter(s => s !== searchTerm);
+
+      if (updatedSearches.length === 0) {
+        this.overlayOpen.set(false);
+      }
+      
+      this.recentSearches.set(updatedSearches);
+
+      return updatedSearches;
+  }
 }

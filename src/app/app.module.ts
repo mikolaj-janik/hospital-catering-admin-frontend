@@ -47,19 +47,25 @@ import { CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
 import { NewHospitalComponent } from './components/new-hospital/new-hospital.component';
 import { DietComponent } from './components/diet/diet.component';
 import { NewDietComponent } from './components/new-diet/new-diet.component';
+import { DietDetailsComponent } from './components/diet-details/diet-details.component';
+import { EditDietComponent } from './components/edit-diet/edit-diet.component';
 
 
 const routes: Routes = [
-  {path: '', component: HospitalsComponent, canActivate: [authGuard]},
   {path: 'hospitals', component: HospitalsComponent, canActivate: [authGuard]},
   {path: 'hospitals/search/:keyword', component: HospitalsComponent, canActivate: [authGuard]},
   {path: 'hospitals/add', component: NewHospitalComponent, canActivate: [authGuard]},
   {path: 'dieticians', component: DieticiansComponent, canActivate: [authGuard]},
   {path: 'meals', component: MealsComponent, canActivate: [authGuard]},
   {path: 'meals/diets', component: DietComponent, canActivate: [authGuard]},
+  {path: 'meals/diets/search/:keyword', component: DietComponent, canActivate: [authGuard]},
+  {path: 'meals/diets/:id', component: DietDetailsComponent, canActivate: [authGuard]},
+  {path: 'meals/diets/edit/:id', component: EditDietComponent, canActivate: [authGuard]},
   {path: 'meals/addDiet', component: NewDietComponent, canActivate: [authGuard]},
   {path: 'login', component: LoginComponent, canActivate: [authGuardLogin]},
-  {path: 'logout', component: LoginComponent, canActivate: [authGuardLogin]}
+  {path: 'logout', component: LoginComponent, canActivate: [authGuardLogin]},
+  {path: '', redirectTo: '/hospitals', pathMatch: 'full'},
+  {path: '**', redirectTo: '/hospitals', pathMatch: 'full'},
 ]
 
 @NgModule({

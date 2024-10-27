@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal, Signal } from '@angular/core';
 import { AuthService } from './auth.service';
 import { SearchBarService } from './search-bar.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { Diet } from '../common/diet';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Form, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -25,18 +26,49 @@ export class DietService {
     const headers = this.authService.getAuthHeaders();
     const url = `${environment.apiUrl}/diets`;
 
-    return this.http.get<Diet[]>(url, { headers }).pipe(
-      catchError(error => {
-        console.error('Error fetching diets', error);
-        this.authService.handleError();
-        return throwError(() => new Error('Failed to fetch diets'));
-      })
-    );
+    return this.http.get<Diet[]>(url, { headers });
+  }
+
+  getDietById(id: number): Observable<Diet> {
+    const headers = this.authService.getAuthHeaders();
+    const url = `${environment.apiUrl}/diets/${id}`;
+
+    return this.http.get<Diet>(url, { headers });
   }
 
   getDietByName(keyword: string): Observable<Diet[]> {
-    // TODO
-    return null;
+    const headers = this.authService.getAuthHeaders();
+    const url = `${environment.apiUrl}/diets/search?name=${keyword}`;
+
+    return this.http.get<Diet[]>(url, { headers });
   }
 
+  updateDiet(diet: {id: number, name: string, description: string}): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+
+    return this.http
+    .put(`${environment.apiUrl}/diets/update`, diet, { headers });
+  }
+
+  addNewDiet(diet: {name: string, description: string}, newDietForm: FormGroup): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+
+    return this.http
+    .post(`${environment.apiUrl}/diets/add`, diet, { headers })
+    .pipe(
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = '';
+       if (error.status === 0) {
+          this.authService.handleServerConnectionError();
+        } else if (error.status === 400) {
+          newDietForm.get('name')?.setErrors({ uniqueNameError: true });
+        } else {
+          this.toastr.error('Wystąpił problem z dodawaniem szpitala');
+        }
+        errorMessage = error.error.message;
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
 }

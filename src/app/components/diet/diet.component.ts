@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Diet } from 'src/app/common/diet';
 import { AuthService } from 'src/app/service/auth.service';
 import { DietService } from 'src/app/service/diet.service';
@@ -16,6 +16,7 @@ export class DietComponent {
 
   dietService = inject(DietService);
   authService = inject(AuthService);
+  router = inject(Router);
   route = inject(ActivatedRoute);
 
   isLoggedIn!: boolean;
@@ -51,7 +52,7 @@ export class DietComponent {
   }
 
   redirectToDetails(id: number) {
-    //TODO
+    this.router.navigate([`meals/diets/${id}`]);
   }
   
   findArrayIndex(id: number) {

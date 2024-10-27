@@ -48,6 +48,10 @@ export class SearchBarComponent {
 
     if (this.routePath === '' || this.routePath === 'hospitals' || this.routePath === 'hospitals/search/:keyword') {
       this.searchBarService.searchHospital(searchTerm);
+
+    } else if (this.routePath === 'meals/diets' || this.routePath === 'meals/diets/search/:keyword') {
+      this.searchBarService.searchDiet(searchTerm);
+
     }
     
   }
@@ -61,12 +65,18 @@ export class SearchBarComponent {
     }
     if (this.routePath === '' || this.routePath === 'hospitals' || this.routePath === 'hospitals/search/:keyword') {
       this.searchBarService.getRecentHospitalSearches();
-    } 
+
+    } else if (this.routePath === 'meals/diets' || this.routePath === 'meals/diets/search/:keyword') {
+      this.searchBarService.getRecentDietsSearches();
+
+    }
   }
 
   handleSearchContent() {
     if (this.routePath === '' || this.routePath === 'hospitals' || this.routePath === 'hospitals/search/:keyword') {
       return 'Szukaj szpitali';
+    } else if (this.routePath === 'meals/diets' || this.routePath === 'meals/diets/search/:keyword') {
+      return 'Szukaj diet';
     } else if (this.routePath === 'dieticians') {
       return 'Szukaj dietetyków';
     } else if (this.routePath === 'meals') {

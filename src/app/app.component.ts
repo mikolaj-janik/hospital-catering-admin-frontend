@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { AfterViewChecked, Component, computed, signal } from '@angular/core';
 import { inject } from '@angular/core';
 import { AuthService } from './service/auth.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -49,10 +49,12 @@ export class AppComponent {
 
   activateSearchBar() {
     if (this.routePath === '' || this.routePath === 'hospitals' || this.routePath === 'hospitals/search/:keyword'
-    ||  this.routePath === 'dieticians'
+    || this.routePath === 'dieticians'
+    || this.routePath === 'meals/diets' || this.routePath === 'meals/diets/search/:keyword'
     ) {
       return true;
     }
     return false;
   }
+
 }

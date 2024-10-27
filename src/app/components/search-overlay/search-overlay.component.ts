@@ -5,7 +5,7 @@ import { inject } from '@angular/core';
 import { SearchBarService } from 'src/app/service/search-bar.service';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, Event } from '@angular/router';
 import { filter } from 'rxjs';
 
 @Component({
@@ -26,13 +26,9 @@ export class SearchOverlayComponent {
 
   ngOnInit() {
     this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        let currentRoute = this.activatedRoute.root;
-        while(currentRoute.firstChild) {
-          currentRoute = currentRoute.firstChild;
-        }
-        this.routePath = currentRoute.snapshot.routeConfig?.path;
+      .pipe(filter((event: Event): event is NavigationEnd => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.routePath = event.urlAfterRedirects;
       });
   }
 
@@ -41,8 +37,12 @@ export class SearchOverlayComponent {
   }
 
   performSearch(searchTerm: string) {
+    console.log('routePath is ' + this.routePath);
     if (this.routePath === '' || this.routePath === 'hospitals') {
       this.searchBarService.searchHospital(searchTerm);
-    } // TODO
+
+    } else if (this.routePath === 'meals/diets' || this.routePath === 'meals/diets/search/:keyword') {
+      this.searchBarService.searchDiet(searchTerm);
+    }
   }
 }
