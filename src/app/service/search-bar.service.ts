@@ -29,6 +29,7 @@ export class SearchBarService {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
+    this.checkIfRecentSearchesExists();
     this.routePathSubject.next(this.router.url);
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -119,5 +120,14 @@ export class SearchBarService {
       this.recentSearches.set(updatedSearches);
 
       return updatedSearches;
+  }
+
+  private checkIfRecentSearchesExists() {
+    if (localStorage.getItem(this.recentHospitalSearches) === null) {
+      localStorage.setItem(this.recentHospitalSearches, JSON.stringify([]));
+    }
+    if (localStorage.getItem(this.recentDietSearches) === null) {
+      localStorage.setItem(this.recentDietSearches, JSON.stringify([]));
+    }
   }
 }

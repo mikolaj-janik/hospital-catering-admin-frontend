@@ -13,7 +13,7 @@
     (click)="handleClickedInput()"
     (keydown.ENTER)="search(searchInput.value)"
     />
-    @if (searchTerm()) {
+    @if (isSearchTerm()) {
         <button mat-icon-button (click)="clearSearch()">
             <mat-icon class="fas fa-times"></mat-icon>
         </button>

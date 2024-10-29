@@ -93,6 +93,12 @@ export class SearchBarComponent {
     if (this.recentSearches().length > 0) {
       this.overlayOpen.set(true);
     }
-    
+  }
+
+  isSearchTerm() {
+    if (this.searchTerm() === null || this.searchTerm() === '') {
+      return false;
+    }
+    return true;
   }
 }
