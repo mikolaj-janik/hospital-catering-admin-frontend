@@ -22,13 +22,11 @@ export class HospitalService {
 
   searchTerm = this.searchBarService.searchTerm;
 
-  getAllHospitals(): Observable<Hospital[]> {
+  getAllHospitals(pageNumber: number, pageSize: number): Observable<GetResponseHospitals> {
     const headers = this.authService.getAuthHeaders();
-    const url = `${environment.apiUrl}/hospitals`;
+    const url = `${environment.apiUrl}/hospitals?page=${pageNumber}&size=${pageSize}`;
 
-    return this.http.get<GetResponseHospitals>(url, { headers }).pipe(map(
-      response => response.content
-    ));
+    return this.http.get<GetResponseHospitals>(url, { headers });
   }
 
   addNewHospital(formData: FormData): Observable<any> {
@@ -51,12 +49,10 @@ export class HospitalService {
     );
   }
 
-  getHospitalsByName(searchTerm: string): Observable<Hospital[]> {
-    const url = `${environment.apiUrl}/hospitals/search?name=${searchTerm}`;
+  getHospitalsByName(pageNumber: number, pageSize: number, searchTerm: string): Observable<GetResponseHospitals> {
+    const url = `${environment.apiUrl}/hospitals/search?name=${searchTerm}&page=${pageNumber}&size=${pageSize}`;
     const headers = this.authService.getAuthHeaders();
-    return this.http.get<GetResponseHospitals>(url, { headers }).pipe(map(
-      response => response.content
-    ));
+    return this.http.get<GetResponseHospitals>(url, { headers });
   }
 }
 

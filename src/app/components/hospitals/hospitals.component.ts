@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { inject } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Hospital } from 'src/app/common/hospital';
 import { AuthService } from 'src/app/service/auth.service';
 import { HospitalService } from 'src/app/service/hospital.service';
-import { SearchBarService } from 'src/app/service/search-bar.service';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-hospitals',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MatPaginator],
   templateUrl: './hospitals.component.html',
   styleUrl: './hospitals.component.scss'
 })
@@ -23,6 +23,13 @@ export class HospitalsComponent {
   isLoggedIn! : boolean;
   hospitals: Hospital[] = [];
   searchMode: boolean = false;
+
+  paginator: MatPaginator;
+  constructor(){}
+
+  pageNumber = 0;
+  pageSize = 6;
+  totalElements = 0;
 
   ngOnInit() {
     this.authService.isLoggedIn$.subscribe(
@@ -41,6 +48,13 @@ export class HospitalsComponent {
     }
   }
 
+  onPageEvent(event: PageEvent) {
+    this.pageSize = event.pageSize;
+    this.pageNumber = event.pageIndex;
+    this.listHospitals();
+    //TODO
+  }
+
   listHospitals() {
     this.searchMode = this.route.snapshot.paramMap.has('keyword');
     
@@ -55,16 +69,18 @@ export class HospitalsComponent {
   handleSearchHospitals() {
     const keyword: string = this.route.snapshot.paramMap.get('keyword')!;
 
-    this.hospitalService.getHospitalsByName(keyword).subscribe(this.processResult());
+    this.hospitalService.getHospitalsByName(this.pageNumber, this.pageSize, keyword).subscribe(this.processResult());
   }
 
   handleListHospitals() {
-    this.hospitalService.getAllHospitals().subscribe(this.processResult());
+    this.hospitalService.getAllHospitals(this.pageNumber, this.pageSize).subscribe(this.processResult());
   }
 
   processResult() {
-    return (hospitals: any) => {
-      this.hospitals = hospitals;
+    return (data: any) => {
+      this.hospitals = data.content;
+      this.totalElements = data.totalElements;
+      this.pageSize = data.size;
     }
   }
 }

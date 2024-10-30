@@ -37,6 +37,8 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/mat
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatPaginatorModule, MatPaginatorIntl } from '@angular/material/paginator';
+import { CustomPaginator } from './service/custom-paginator';
 import { CustomSidenavComponent } from "./components/custom-sidenav/custom-sidenav.component";
 import { HospitalsComponent } from './components/hospitals/hospitals.component';
 import { DieticiansComponent } from './components/dieticians/dieticians.component';
@@ -100,6 +102,7 @@ const routes: Routes = [
     MatSelectModule,
     MatRadioModule,
     MatCheckboxModule,
+    MatPaginatorModule,
     ToastrModule.forRoot(),
     RouterModule.forRoot(routes),
     CustomSidenavComponent,
@@ -111,6 +114,10 @@ const routes: Routes = [
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline', subscriptSizing: 'dynamic'}
+    },
+    {
+      provide: MatPaginatorIntl,
+      useValue: CustomPaginator()
     }
   ],
   bootstrap: [AppComponent]
