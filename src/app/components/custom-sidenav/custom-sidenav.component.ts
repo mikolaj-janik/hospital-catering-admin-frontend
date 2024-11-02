@@ -64,7 +64,7 @@ export class CustomSidenavComponent {
       route: 'hospitals',
       subItems: [
         {
-          icon: 'far fa-hospital',
+          icon: 'fas fa-clinic-medical',
           label: 'Dodaj szpital',
           route: 'add',
         }
@@ -80,6 +80,11 @@ export class CustomSidenavComponent {
       label: 'Posiłki',
       route: 'meals',
       subItems: [
+        {
+          icon: 'fas fa-fish',
+          label: 'Dodaj posiłek',
+          route: 'addMeal'
+        },
         {
           icon: 'fas fa-carrot',
           label: 'Diety',
