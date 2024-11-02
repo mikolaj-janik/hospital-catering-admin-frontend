@@ -25,7 +25,6 @@ export class HospitalsComponent {
   searchMode: boolean = false;
 
   paginator: MatPaginator;
-  constructor(){}
 
   pageNumber = 0;
   pageSize = 6;
@@ -52,7 +51,6 @@ export class HospitalsComponent {
     this.pageSize = event.pageSize;
     this.pageNumber = event.pageIndex;
     this.listHospitals();
-    //TODO
   }
 
   listHospitals() {

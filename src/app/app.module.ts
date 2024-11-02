@@ -38,6 +38,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule, MatPaginatorIntl } from '@angular/material/paginator';
+import { MatDialogModule } from '@angular/material/dialog';
 import { CustomPaginator } from './service/custom-paginator';
 import { CustomSidenavComponent } from "./components/custom-sidenav/custom-sidenav.component";
 import { HospitalsComponent } from './components/hospitals/hospitals.component';
@@ -52,6 +53,7 @@ import { NewDietComponent } from './components/new-diet/new-diet.component';
 import { DietDetailsComponent } from './components/diet-details/diet-details.component';
 import { EditDietComponent } from './components/edit-diet/edit-diet.component';
 import { NewMealComponent } from './components/new-meal/new-meal.component';
+import { DiaryComponent } from './components/diary/diary.component';
 
 
 const routes: Routes = [
@@ -60,12 +62,14 @@ const routes: Routes = [
   {path: 'hospitals/add', component: NewHospitalComponent, canActivate: [authGuard]},
   {path: 'dieticians', component: DieticiansComponent, canActivate: [authGuard]},
   {path: 'meals', component: MealsComponent, canActivate: [authGuard]},
+  {path: 'meals/search/:keyword', component: MealsComponent, canActivate: [authGuard]},
   {path: 'meals/addMeal', component: NewMealComponent, canActivate: [authGuard]},
   {path: 'meals/diets', component: DietComponent, canActivate: [authGuard]},
   {path: 'meals/diets/search/:keyword', component: DietComponent, canActivate: [authGuard]},
   {path: 'meals/diets/:id', component: DietDetailsComponent, canActivate: [authGuard]},
   {path: 'meals/diets/edit/:id', component: EditDietComponent, canActivate: [authGuard]},
   {path: 'meals/addDiet', component: NewDietComponent, canActivate: [authGuard]},
+  {path: 'meals/diary', component: DiaryComponent, canActivate: [authGuard]},
   {path: 'login', component: LoginComponent, canActivate: [authGuardLogin]},
   {path: 'logout', component: LoginComponent, canActivate: [authGuardLogin]},
   {path: '', redirectTo: '/hospitals', pathMatch: 'full'},
@@ -105,6 +109,7 @@ const routes: Routes = [
     MatRadioModule,
     MatCheckboxModule,
     MatPaginatorModule,
+    MatDialogModule,
     ToastrModule.forRoot(),
     RouterModule.forRoot(routes),
     CustomSidenavComponent,

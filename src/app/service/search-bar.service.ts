@@ -21,6 +21,7 @@ export class SearchBarService {
 
   private readonly recentHospitalSearches = 'recentHospitalSearches';
   private readonly recentDietSearches = 'recentDietSearches';
+  private readonly recentMealSearches = 'recentMealSearches';
 
   private routePathSubject = new BehaviorSubject<string>('');
   routePath$: Observable<string> = this.routePathSubject.asObservable();
@@ -54,6 +55,14 @@ export class SearchBarService {
     this.router.navigate([`meals/diets/search/${searchTerm}`]);
   }
 
+  searchMeal(searchTerm: string) {
+    this.searchTerm.set(searchTerm);
+    this.overlayOpen.set(false);
+    this.addMealToRecentSearches(searchTerm);
+    console.log(searchTerm);
+    this.router.navigate([`meals/search/${searchTerm}`]);
+  }
+
   getRecentHospitalSearches() {
     const routePath = this.routePathSubject.value;
     if (routePath === '' || routePath === '/hospitals' || routePath.startsWith('/hospitals/search')) {
@@ -73,6 +82,17 @@ export class SearchBarService {
         this.recentSearches.set(JSON.parse(searches));
       }
     }
+  }
+  
+  getRecentMealsSearches() {
+    const routePath = this.routePathSubject.value;
+    if (routePath === '/meals' || routePath.startsWith('/meals/search')) {
+      let searches = localStorage.getItem(this.recentMealSearches);
+
+      if (searches) {
+        this.recentSearches.set(JSON.parse(searches));
+      }
+    }
   } // TODO similar methods with meals, users etc
 
   deleteRecentSearch(searchTerm: string) {
@@ -84,6 +104,10 @@ export class SearchBarService {
     } else if (routePath === '/meals/diets' || routePath.startsWith('/meals/diets/search')) {
       const updatedSearches = this.handleDeleteSearch(searchTerm);
       localStorage.setItem(this.recentDietSearches, JSON.stringify(updatedSearches));
+      
+    } else if (routePath === '/meals' || routePath.startsWith('/meals/search')) {
+      const updatedSearches = this.handleDeleteSearch(searchTerm);
+      localStorage.setItem(this.recentMealSearches, JSON.stringify(updatedSearches));
     }
   }
 
@@ -97,6 +121,12 @@ export class SearchBarService {
     const updatedSearches = this.handleAddNameToRecentSearches(searchTerm);
 
     localStorage.setItem(this.recentDietSearches, JSON.stringify(updatedSearches));
+  }
+
+  addMealToRecentSearches(searchTerm: string) {
+    const updatedSearches = this.handleAddNameToRecentSearches(searchTerm);
+    
+    localStorage.setItem(this.recentMealSearches, JSON.stringify(updatedSearches));
   }
   
   private handleAddNameToRecentSearches(searchTerm: string) {
@@ -128,6 +158,9 @@ export class SearchBarService {
     }
     if (localStorage.getItem(this.recentDietSearches) === null) {
       localStorage.setItem(this.recentDietSearches, JSON.stringify([]));
+    }
+    if (localStorage.getItem(this.recentMealSearches) === null) {
+      localStorage.setItem(this.recentMealSearches, JSON.stringify([]));
     }
   }
 }

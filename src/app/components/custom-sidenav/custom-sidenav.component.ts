@@ -98,7 +98,7 @@ export class CustomSidenavComponent {
         {
           icon: 'far fa-calendar-alt',
           label: 'Jadłospis',
-          route: ''
+          route: 'diary'
         }
       ]
     }
