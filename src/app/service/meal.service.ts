@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { SearchBarService } from './search-bar.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Meal } from '../common/meal';
 
@@ -21,16 +21,44 @@ export class MealService {
 
   searchTerm = this.searchBarService.searchTerm;
 
-  getAllMeals(pageNumber: number, pageSize: number): Observable<GetResponseMeals> {
+  getAllMeals(dietId: number, type: string, pageNumber: number, pageSize: number): Observable<GetResponseMeals> {
     const headers = this.authService.getAuthHeaders();
-    const url = `${environment.apiUrl}/meals?page=${pageNumber}&size=${pageSize}`;
+    const url = `${environment.apiUrl}/meals?dietId=${dietId}&type=${type}&page=${pageNumber}&size=${pageSize}`;
 
     return this.http.get<GetResponseMeals>(url, { headers });
   }
+
   getMealsByName(pageNumber: number, pageSize: number, searchTerm: string): Observable<GetResponseMeals> {
     const url = `${environment.apiUrl}/meals/search?name=${searchTerm}&page=${pageNumber}&size=${pageSize}`;
     const headers = this.authService.getAuthHeaders();
     return this.http.get<GetResponseMeals>(url, { headers });
+  }
+
+  addNewMeal(formData: FormData): Observable<any> {
+    const headers = this.authService.getAuthHeadersWithFile();
+
+    return this.http
+    .post(`${environment.apiUrl}/meals/add`, formData, { headers })
+    .pipe(
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = '';
+       if (error.status === 0) {
+          this.authService.handleServerConnectionError();
+        } else {
+          this.toastr.error('Wystąpił problem z dodawaniem szpitala');
+        }
+        errorMessage = error.error.message;
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  updateMeal(formData: FormData): Observable<any> {
+    const headers = this.authService.getAuthHeadersWithFile();
+
+    return this.http
+    .put(`${environment.apiUrl}/meals/update`, formData, { headers });
   }
 }
 

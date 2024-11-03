@@ -29,6 +29,13 @@ export class DietService {
     return this.http.get<Diet[]>(url, { headers });
   }
 
+  getAllDietsWithActiveMeals(): Observable<Diet[]> {
+    const headers = this.authService.getAuthHeaders();
+    const url = `${environment.apiUrl}/diets/current`;
+
+    return this.http.get<Diet[]>(url, { headers });
+  }
+
   getDietById(id: number): Observable<Diet> {
     const headers = this.authService.getAuthHeaders();
     const url = `${environment.apiUrl}/diets/${id}`;

@@ -7,6 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { Router, RouterModule } from '@angular/router';
 import { HospitalService } from 'src/app/service/hospital.service';
 import { ToastrService } from 'ngx-toastr';
+import { DietService } from 'src/app/service/diet.service';
 
 @Component({
   selector: 'app-new-hospital',
@@ -38,6 +39,7 @@ export class NewHospitalComponent {
   camelCasePattern = '^[A-Z].*$';
 
   hospitalService = inject(HospitalService);
+  dietService = inject(DietService);
   toastr = inject(ToastrService);
   router = inject(Router);
 

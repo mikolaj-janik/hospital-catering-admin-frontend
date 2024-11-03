@@ -11,3 +11,13 @@ mat-paginator{
     height: 100%; 
     object-fit: cover; 
 }
+
+mat-form-field {
+    background-color: white;
+}
+
+@media (min-width: 0px) and (max-width: 767.98px) {
+    .mb-only-sm-2 {
+      margin-bottom: 0.5rem; 
+    }
+}

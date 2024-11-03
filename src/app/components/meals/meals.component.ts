@@ -6,12 +6,21 @@ import { AuthService } from 'src/app/service/auth.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
 import { Meal } from 'src/app/common/meal';
+import { DietService } from 'src/app/service/diet.service';
+
+
+interface Diet {
+  id: number;
+  name: string;
+  description: string;
+}
 
 @Component({
   selector: 'app-meals',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatPaginator],
+  imports: [CommonModule, RouterModule, MatPaginator, MatSelectModule],
   templateUrl: './meals.component.html',
   styleUrl: './meals.component.scss'
 })
@@ -19,12 +28,18 @@ export class MealsComponent {
 
   dialogRef = inject(MatDialog);
   mealService = inject(MealService);
+  dietService = inject(DietService);
   authService = inject(AuthService);
   route = inject(ActivatedRoute);
 
   isLoggedIn!: boolean;
   meals: Meal[] = [];
+  diets: Diet[] = [];
+  types = ['wszystkie', 'śniadanie', 'obiad', 'kolacja'];
   searchMode: boolean = false;
+
+  selectedType = 'wszystkie';
+  selectedDiet = 0;
 
   pageNumber = 0;
   pageSize = 10;
@@ -44,10 +59,23 @@ export class MealsComponent {
       this.listMeals();
     });
     
+    this.dietService.getAllDietsWithActiveMeals().subscribe((diets: Diet[]) => {
+      this.diets = diets;
+    });
     
     if (!this.isLoggedIn) {
       this.authService.logout(); 
     }
+  }
+
+  onTypeSelected(selectedType: string) {
+    this.selectedType = selectedType;
+    this.listMeals();
+  }
+
+  onDietSelected(selectedDiet: number) {
+    this.selectedDiet = selectedDiet;
+    this.listMeals();
   }
 
   onPageEvent(event: PageEvent) {
@@ -69,12 +97,13 @@ export class MealsComponent {
 
   handleSearchMeals() {
     const keyword: string = this.route.snapshot.paramMap.get('keyword')!;
+    console.log(this.selectedDiet);
     
     return this.mealService.getMealsByName(this.pageNumber, this.pageSize, keyword).subscribe(this.processResult());
   }
 
   handleListMeals() {
-    this.mealService.getAllMeals(this.pageNumber, this.pageSize).subscribe(this.processResult());
+    this.mealService.getAllMeals(this.selectedDiet, this.selectedType, this.pageNumber, this.pageSize).subscribe(this.processResult());
   }
 
   processResult() {
@@ -85,7 +114,7 @@ export class MealsComponent {
     }
   }
 
-  redirectToEdit() {
+  redirectToDetails() {
     console.log('TODO');
   }
 }
