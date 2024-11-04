@@ -56,12 +56,13 @@
                           <div class="col-lg-1 py-4 px-0 d-flex flex-column justify-content-center align-items-center" >
                             <button type="button"
                                 class="btn btn-link btn-rounded btn-sm fw-bold mb-3"
+                                (click)="redirectToDetails(meal.id)"
                             >
                             Więcej
                             </button>
                             <a role="button" class="fas fa-trash-alt mt-3" 
                                 style="color: rgb(192, 35, 35);" 
-                                (click)="redirectToDetails()"></a>
+                            ></a>
                           </div>
                         </div>
                       </div>

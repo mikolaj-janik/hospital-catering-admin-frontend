@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PopUpComponent } from '../pop-up/pop-up.component';
 import { MealService } from 'src/app/service/meal.service';
 import { AuthService } from 'src/app/service/auth.service';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
@@ -31,6 +31,7 @@ export class MealsComponent {
   dietService = inject(DietService);
   authService = inject(AuthService);
   route = inject(ActivatedRoute);
+  router = inject(Router);
 
   isLoggedIn!: boolean;
   meals: Meal[] = [];
@@ -114,7 +115,7 @@ export class MealsComponent {
     }
   }
 
-  redirectToDetails() {
-    console.log('TODO');
+  redirectToDetails(id: number) {
+    this.router.navigate([`meals/${id}`]);
   }
 }

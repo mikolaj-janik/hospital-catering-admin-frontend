@@ -1,0 +1,63 @@
+<h2>Posiłki</h2>
+<hr>
+@if(meal != null) {
+    <div class="container-fluid">
+        <div class="card">
+            <div class="row align-items-center d-flex p-3">
+                <div class="image-container ms-md-4 col-md-3 mb-2">
+                    <a role="button" (click)="openDialog('data:image/jpeg;base64,' + meal.image)">
+                        <img [src]="'data:image/jpeg;base64,' + meal.image">
+                    </a>
+                </div>
+                <div class="col-md-8 meal-column">
+                    <div class="card-body pb-2"><h4>{{ meal.name }}</h4></div>
+                    <div class="card-body pt-0" style="font-size: large;">
+                        {{ meal.description }}
+                    </div>
+                    <p class="mb-4 ms-4">
+                        <small class="text-muted">rodzaj: {{ meal.type }}</small><br>
+                        <small class="text-muted">dieta: {{ meal.diet.name }}</small>
+                    </p>
+                    <div class="col-lg-6 col-md-3 col-sm-1 ms-3">
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Kalorie</th>
+                                    <th scope="col">Białko</th>
+                                    <th scope="col">Węglowodany</th> 
+                                    <th scope="col">Tłuszcze</th> 
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ meal.calories }}</td>
+                                    <td>{{ meal.protein }}</td> 
+                                    <td>{{ meal.carbohydrates }}</td>
+                                    <td>{{ meal.fats }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="ms-2 pt-1">
+                        <button type="button"
+                        class="btn btn-link btn-rounded btn fw-bold"
+                        style="color:#ff4646"
+                        (click)="redirectToMeals()"
+                        >
+                        Wstecz
+                        </button>
+                        <button type="button"
+                            class="btn btn-link btn-rounded btn fw-bold"
+                            (click)="redirectToEdit(meal.id)"
+                        >
+                        Edytuj
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+} @else {
+    <h3 style="font-weight: 400;">Nie znaleziono diety</h3>
+}

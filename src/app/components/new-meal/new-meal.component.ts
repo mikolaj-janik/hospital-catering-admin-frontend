@@ -50,8 +50,8 @@ export class NewMealComponent {
 
   newMealForm = new FormGroup({
     dietId: new FormControl(this.dietId, [Validators.required, Validators.min(1)]),
-    name: new FormControl(this.name, [Validators.required, Validators.maxLength(250)]),
-    description: new FormControl(this.description, [Validators.required, Validators.maxLength(1020)]),
+    name: new FormControl(this.name, [Validators.required, Validators.maxLength(150)]),
+    description: new FormControl(this.description, [Validators.required, Validators.maxLength(350)]),
     price: new FormControl(this.price, [Validators.required, Validators.min(0)]),
     type: new FormControl(this.type, [Validators.required]),
     calories: new FormControl(this.calories, [Validators.required, Validators.min(0)]),

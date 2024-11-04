@@ -34,6 +34,14 @@ export class MealService {
     return this.http.get<GetResponseMeals>(url, { headers });
   }
 
+  getMealById(id: number): Observable<Meal> {
+    const headers = this.authService.getAuthHeaders();
+    const url = `${environment.apiUrl}/meals/${id}`;
+
+    return this.http.get<Meal>(url, { headers });
+  }
+
+
   addNewMeal(formData: FormData): Observable<any> {
     const headers = this.authService.getAuthHeadersWithFile();
 

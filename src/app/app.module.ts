@@ -53,6 +53,8 @@ import { DietDetailsComponent } from './components/diet-details/diet-details.com
 import { EditDietComponent } from './components/edit-diet/edit-diet.component';
 import { NewMealComponent } from './components/new-meal/new-meal.component';
 import { DiaryComponent } from './components/diary/diary.component';
+import { MealDetailsComponent } from './components/meal-details/meal-details.component';
+import { EditMealComponent } from './components/edit-meal/edit-meal.component';
 
 
 const routes: Routes = [
@@ -61,6 +63,8 @@ const routes: Routes = [
   {path: 'hospitals/add', component: NewHospitalComponent, canActivate: [authGuard]},
   {path: 'dieticians', component: DieticiansComponent, canActivate: [authGuard]},
   {path: 'meals', component: MealsComponent, canActivate: [authGuard]},
+  {path: 'meals/:id', component: MealDetailsComponent, canActivate: [authGuard]},
+  {path: 'meals/edit/:id', component: EditMealComponent, canActivate: [authGuard]},
   {path: 'meals/search/:keyword', component: MealsComponent, canActivate: [authGuard]},
   {path: 'meals/addMeal', component: NewMealComponent, canActivate: [authGuard]},
   {path: 'meals/diets', component: DietComponent, canActivate: [authGuard]},
