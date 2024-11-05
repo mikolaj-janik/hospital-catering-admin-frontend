@@ -51,6 +51,9 @@
                                 <small class="text-muted">rodzaj: {{ meal.type }}</small><br>
                                 <small class="text-muted">dieta: {{ meal.diet.name }}</small>
                               </p>
+                              @if(meal.price > 0) {
+                                <h6 class="mb-0 mt-3 ">Cena: {{ meal.price }} zł</h6>
+                              }
                             </div>
                           </div>
                           <div class="col-lg-1 py-4 px-0 d-flex flex-column justify-content-center align-items-center" >

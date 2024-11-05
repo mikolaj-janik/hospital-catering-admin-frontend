@@ -4,7 +4,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Diet } from 'src/app/common/diet';
@@ -119,8 +119,12 @@ export class NewMealComponent {
       this.toastr.error('Formularz nie został poprawnie wypełniony');
     }
   }
+
   handleMealPaid() {
     this.mealPaid = !this.mealPaid;
-    console.log(this.mealPaid);
+    if (!this.mealPaid && this.price > 0) {
+      this.price = 0;
+      this.newMealForm.get('price').setValue(0);
+    }
   }
 }

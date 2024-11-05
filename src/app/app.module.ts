@@ -63,7 +63,7 @@ const routes: Routes = [
   {path: 'hospitals/add', component: NewHospitalComponent, canActivate: [authGuard]},
   {path: 'dieticians', component: DieticiansComponent, canActivate: [authGuard]},
   {path: 'meals', component: MealsComponent, canActivate: [authGuard]},
-  {path: 'meals/:id', component: MealDetailsComponent, canActivate: [authGuard]},
+  {path: 'meals/details/:id', component: MealDetailsComponent, canActivate: [authGuard]},
   {path: 'meals/edit/:id', component: EditMealComponent, canActivate: [authGuard]},
   {path: 'meals/search/:keyword', component: MealsComponent, canActivate: [authGuard]},
   {path: 'meals/addMeal', component: NewMealComponent, canActivate: [authGuard]},

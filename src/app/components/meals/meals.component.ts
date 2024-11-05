@@ -116,6 +116,6 @@ export class MealsComponent {
   }
 
   redirectToDetails(id: number) {
-    this.router.navigate([`meals/${id}`]);
+    this.router.navigate([`meals/details/${id}`]);
   }
 }

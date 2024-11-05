@@ -30,12 +30,17 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{{ meal.calories }}</td>
-                                    <td>{{ meal.protein }}</td> 
-                                    <td>{{ meal.carbohydrates }}</td>
-                                    <td>{{ meal.fats }}</td>
+                                    <td>{{ meal.calories }} kcal</td>
+                                    <td>{{ meal.protein }}g</td> 
+                                    <td>{{ meal.carbohydrates }}g</td>
+                                    <td>{{ meal.fats }}g</td>
                                 </tr>
                             </tbody>
+                            @if(meal.price === 0 ) {
+                                <p class="mb-0 mt-3 ms-3">Posiłek bezpłatny</p>
+                            } @else {
+                                <h6 class="mb-0 mt-3 ms-3">Cena: {{ meal.price }} zł</h6>
+                            }
                         </table>
                     </div>
                     

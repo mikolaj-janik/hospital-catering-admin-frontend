@@ -68,7 +68,6 @@ export class EditDietComponent {
           }
         )
         .subscribe(() => {
-          console.log('The diet has been succesfully updated');
           this.toastr.success('Zaktualizowano dietę');
           this.router.navigate([`meals/diets/${id}`]);
         });

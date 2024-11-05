@@ -7,7 +7,7 @@ export class Meal {
         public name: string,
         public description: string,
         public price: number,
-        public type: number,
+        public type: string,
         public calories: number,
         public protein: number,
         public carbohydrates: number,
