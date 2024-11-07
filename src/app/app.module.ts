@@ -55,6 +55,7 @@ import { NewMealComponent } from './components/new-meal/new-meal.component';
 import { DiaryComponent } from './components/diary/diary.component';
 import { MealDetailsComponent } from './components/meal-details/meal-details.component';
 import { EditMealComponent } from './components/edit-meal/edit-meal.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 
 const routes: Routes = [
@@ -118,7 +119,8 @@ const routes: Routes = [
     CustomSidenavComponent,
     SearchBarComponent,
     SearchOverlayComponent,
-    OverlayModule
+    OverlayModule,
+    FullCalendarModule
 ],
   providers: [
     {
