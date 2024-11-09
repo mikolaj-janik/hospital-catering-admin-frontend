@@ -1,3 +1,13 @@
-<div class="container p-4">
+<div class="col-lg-2 col-md-5 flex-column d-flex justify-content-center ms-4" style="background-color: white;">
+    <mat-form-field>
+      <mat-label>dieta</mat-label>
+      <mat-select name="type" (selectionChange)="onDietSelected($event.value)">
+        @for (diet of diets; track diet.name) {
+          <mat-option [value]="diet.id">{{ diet.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+<div class="calendar-container p-4">
     <full-calendar [options]="calendarOptions"></full-calendar>
 </div>

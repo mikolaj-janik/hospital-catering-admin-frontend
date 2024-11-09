@@ -16,7 +16,6 @@
     <mat-form-field>
       <mat-label>dieta</mat-label>
       <mat-select name="type" (selectionChange)="onDietSelected($event.value)">
-        <mat-option value=0>wszystkie</mat-option>
         @for (diet of diets; track diet.name) {
           <mat-option [value]="diet.id">{{ diet.name }}</mat-option>
         }
