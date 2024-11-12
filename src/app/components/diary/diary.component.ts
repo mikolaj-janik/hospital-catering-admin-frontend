@@ -10,6 +10,8 @@ import { Router, RouterModule } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { DiaryService } from 'src/app/service/diary.service';
 import { Diet } from 'src/app/common/diet';
+import plLocale from '@fullcalendar/core/locales/pl';
+import { Diary } from 'src/app/common/diary';
 
 @Component({
   selector: 'app-diary',
@@ -25,24 +27,42 @@ export class DiaryComponent {
   router = inject(Router);
 
   diets: Diet[] = [];
+  selectedDiet = 0;
+
+  datesWithMeals = [];
+
+  diaries: Diary[] = [];
 
   ngOnInit() {
     this.dietService.getAllDietsWithActiveMeals().subscribe((diets: Diet[]) => {
       this.diets = diets;
+      this.selectedDiet = diets[0].id;
+      this.handleDietsUpdate(this.selectedDiet);
     });
+  
   }
 
-  onDietSelected(selectedDiet: number) {
-    // TODO: fetch diets dynamically 
+  onDietSelected(selectedDietId: number) {
+    this.selectedDiet = selectedDietId;
+    this.handleDietsUpdate(selectedDietId);
   }
 
-  // temporary 
-  // TODO: fetch diaries from database
-  datesWithMeals = ['2024-11-06', '2024-11-15', '2024-11-20'];
+  handleDietsUpdate(dietId: number) {
+    if (dietId > 0) {
+      this.diaryService.getDiariesByDietId(dietId).subscribe(data => {
+        this.diaries = data;
+        this.updateDates();
+        this.refreshCalendar();
+        console.log(this.datesWithMeals);
+      });
+    }
+  }
 
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
     plugins: [dayGridPlugin, interactionPlugin],
+    locale: plLocale,
+    timeZone: 'local',
     firstDay: 1,
     headerToolbar: {
       left: '',
@@ -50,23 +70,20 @@ export class DiaryComponent {
       right: 'prev,next'
     },
     dayHeaderContent: this.customDayHeader,
-    datesSet: this.customMonthNames.bind(this),
     dayCellContent: this.customDayCellContent.bind(this)
   };
+
+  onSelectAddDiary(date: Date) {
+    //TODO
+  }
+
+  onSelectDiaryDetails(diaryId: number) {
+    //TODO
+  } 
 
   customDayHeader(arg: any) {
     const daysOfWeek = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
     return { html: daysOfWeek[arg.date.getUTCDay()] };
-  }
-
-  customMonthNames(arg: any) {
-    const monthHeaders = document.querySelectorAll('.fc-toolbar-title');
-    const months = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
-    monthHeaders.forEach(header => {
-      const monthIndex = new Date(arg.view.currentStart).getMonth();
-      const year = new Date(arg.view.currentStart).getFullYear();
-      header.innerHTML = `<span style="font-weight: 400;">Jadłospis - ${months[monthIndex]} ${year}</span>`;
-    });
   }
 
   ngAfterViewInit() {
@@ -74,7 +91,7 @@ export class DiaryComponent {
   }
 
   customDayCellContent(arg: any) {
-    const dateStr = arg.date.toISOString().split('T')[0]; 
+    const dateStr = arg.date.toLocaleDateString('sv-SE');
     const dayNumber = arg.date.getDate();
     const today = new Date();
     today.setDate(today.getDate() - 1);
@@ -123,7 +140,24 @@ export class DiaryComponent {
         background-color: #f0f0f0;
         pointer-events: none; 
       }
+      .fc .fc-toolbar-title {
+        font-weight: 400;
+      }
     `;
     document.head.appendChild(style);
+  }
+
+  private updateDates() {
+    this.datesWithMeals = [];
+    for (let diary of this.diaries) {
+      this.datesWithMeals.push(diary.date.toString());
+    }
+  }
+
+  private refreshCalendar() {
+    this.calendarOptions = {
+      ...this.calendarOptions,
+      dayCellContent: this.customDayCellContent.bind(this),
+    };
   }
 }

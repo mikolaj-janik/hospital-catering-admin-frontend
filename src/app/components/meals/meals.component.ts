@@ -71,12 +71,12 @@ export class MealsComponent {
 
   onTypeSelected(selectedType: string) {
     this.selectedType = selectedType;
-    this.listMeals();
+    this.handleListMeals();
   }
 
   onDietSelected(selectedDiet: number) {
     this.selectedDiet = selectedDiet;
-    this.listMeals();
+    this.handleListMeals();
   }
 
   onPageEvent(event: PageEvent) {

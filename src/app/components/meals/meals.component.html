@@ -1,27 +1,30 @@
-<div class="row">
+<div class="row mt-1">
   <div class="col-md-2">
     <h2>Posiłki</h2>
   </div>
-  <div class="col-lg-2 me-lg-2 col-md-5 flex-column mb-only-sm-2 d-flex justify-content-center">
-    <mat-form-field>
-      <mat-label>rodzaj</mat-label>
-      <mat-select name="type" (selectionChange)="onTypeSelected($event.value)">
-        @for (type of types; track type) {
-          <mat-option [value]="type">{{ type }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div class="col-lg-2 col-md-5 flex-column d-flex justify-content-center">
-    <mat-form-field>
-      <mat-label>dieta</mat-label>
-      <mat-select name="type" (selectionChange)="onDietSelected($event.value)">
-        @for (diet of diets; track diet.name) {
-          <mat-option [value]="diet.id">{{ diet.name }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-  </div>
+  @if (meals.length > 0) {
+    <div class="col-lg-2 me-lg-2 col-md-5 flex-column mb-only-sm-2 d-flex justify-content-center">
+      <mat-form-field>
+        <mat-label>rodzaj</mat-label>
+        <mat-select name="type" (selectionChange)="onTypeSelected($event.value)">
+          @for (type of types; track type) {
+            <mat-option [value]="type">{{ type }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-2 col-md-5 flex-column d-flex justify-content-center">
+      <mat-form-field>
+        <mat-label>dieta</mat-label>
+        <mat-select name="type" (selectionChange)="onDietSelected($event.value)">
+          <mat-option value=0>wszystkie</mat-option>
+          @for (diet of diets; track diet.name) {
+            <mat-option [value]="diet.id">{{ diet.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  }
 </div>
 
 <hr>
