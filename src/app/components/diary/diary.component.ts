@@ -12,6 +12,7 @@ import { DiaryService } from 'src/app/service/diary.service';
 import { Diet } from 'src/app/common/diet';
 import plLocale from '@fullcalendar/core/locales/pl';
 import { Diary } from 'src/app/common/diary';
+import { Renderer2 } from '@angular/core';
 
 @Component({
   selector: 'app-diary',
@@ -25,19 +26,24 @@ export class DiaryComponent {
   diaryService = inject(DiaryService);
   dietService = inject(DietService);
   router = inject(Router);
+  renderer = inject(Renderer2);
 
   diets: Diet[] = [];
   selectedDiet = 0;
+  isResponseHere = false;
 
   datesWithMeals = [];
 
   diaries: Diary[] = [];
+
+  diaryMap: Map<string, Diary> = new Map();
 
   ngOnInit() {
     this.dietService.getAllDietsWithActiveMeals().subscribe((diets: Diet[]) => {
       this.diets = diets;
       this.selectedDiet = diets[0].id;
       this.handleDietsUpdate(this.selectedDiet);
+      this.isResponseHere = true;
     });
   
   }
@@ -49,13 +55,23 @@ export class DiaryComponent {
 
   handleDietsUpdate(dietId: number) {
     if (dietId > 0) {
+      this.isResponseHere = false;
       this.diaryService.getDiariesByDietId(dietId).subscribe(data => {
         this.diaries = data;
         this.updateDates();
         this.refreshCalendar();
-        console.log(this.datesWithMeals);
+        this.initializeDiaryMap();
+        this.isResponseHere = true;
       });
     }
+  }
+
+  initializeDiaryMap() {
+    this.diaryMap.clear();
+    this.diaries.forEach(diary => {
+      const dateKey = diary.date.toString();
+      this.diaryMap.set(dateKey, diary);
+    });
   }
 
   calendarOptions: CalendarOptions = {
@@ -78,6 +94,7 @@ export class DiaryComponent {
   }
 
   onSelectDiaryDetails(diaryId: number) {
+    console.log(diaryId);
     //TODO
   } 
 
@@ -109,15 +126,15 @@ export class DiaryComponent {
       buttonType = 'btn-success';
       buttonText = 'Dodaj jadłospis';
       title = 'Brak posiłków';
-    }
+    } 
 
     if (cellDate < today) {
       disabled = 'disabled';
       buttonTextColor = "color: white;"
     }
 
-    return {
-        html: `
+    const cellContent = document.createElement('div');
+    cellContent.innerHTML = `
         <div class="row">
           <span style="color: rgb(110, 110, 110); font-weight: 450;">${dayNumber}</span>
         </div>
@@ -125,8 +142,19 @@ export class DiaryComponent {
           <span>${title}</span>
           <button class="btn ${buttonType} ${disabled}" style="width: 100%; ${buttonTextColor}">${buttonText}</button>
         </div>
-      `
-    };
+      `;
+      const button = cellContent.querySelector('button');
+      if (button) {
+        this.renderer.listen(button, 'click', () => {
+          if (hasMeal) {
+            const diaryId = this.diaryMap.get(dateStr).id;
+            this.onSelectDiaryDetails(diaryId);
+          } else {
+            this.onSelectAddDiary(cellDate);
+          }
+        });
+      }
+    return { domNodes: [cellContent] };
   }
 
   applyCustomStyles() {
@@ -153,6 +181,8 @@ export class DiaryComponent {
       this.datesWithMeals.push(diary.date.toString());
     }
   }
+
+  private 
 
   private refreshCalendar() {
     this.calendarOptions = {

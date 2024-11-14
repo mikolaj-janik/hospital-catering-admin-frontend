@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { DietService } from 'src/app/service/diet.service';
 import { Diet } from 'src/app/common/diet';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-edit-meal',
@@ -22,6 +23,8 @@ import { Diet } from 'src/app/common/diet';
 })
 export class EditMealComponent {
   meal: Meal = null;
+
+  isResponseHere = false;
 
   dietId = 0;
   name = '';
@@ -92,7 +95,14 @@ export class EditMealComponent {
   handleMealDetails() {
     const mealId: number = +this.route.snapshot.paramMap.get('id');
 
-    this.mealService.getMealById(mealId).subscribe(
+    this.mealService.getMealById(mealId).pipe(
+      catchError((error) => {
+        if (error.status === 404) {
+          this.isResponseHere = true;
+          return of(null);
+        }
+      })
+    ).subscribe(
       data => {
         this.meal = data;
         this.dietId = data.diet.id;
@@ -117,6 +127,7 @@ export class EditMealComponent {
         if (this.price > 0) {
           this.mealPaid = true;
         }
+        this.isResponseHere = true;
       }
     );
   }

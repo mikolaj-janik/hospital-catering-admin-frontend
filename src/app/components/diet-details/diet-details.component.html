@@ -24,6 +24,10 @@
             </div>
         </div>
     </div>
-} @else {
+} @else if (!isResponseHere){
+    <div class="row d-flex align-items-center justify-content-center v-100" style="height: 400px;">
+      <img src="./assets/images/loader.gif" style="width: 120px; height: auto;">
+    </div>
+  } @else {
     <h3 style="font-weight: 400;">Nie znaleziono diety</h3>
-}
+  }

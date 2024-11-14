@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Meal } from 'src/app/common/meal';
 import { MealService } from 'src/app/service/meal.service';
 import { PopUpComponent } from '../pop-up/pop-up.component';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-meal-details',
@@ -14,6 +15,8 @@ import { PopUpComponent } from '../pop-up/pop-up.component';
 })
 export class MealDetailsComponent {
   meal: Meal = null;
+
+  isResponseHere = false;
 
   dialogRef = inject(MatDialog);
   mealService = inject(MealService);
@@ -29,9 +32,17 @@ export class MealDetailsComponent {
   handleMealDetails() {
     const mealId: number = +this.route.snapshot.paramMap.get('id')!;
 
-    this.mealService.getMealById(mealId).subscribe(
+    this.mealService.getMealById(mealId).pipe(
+      catchError((error) => {
+        if (error.status === 404) {
+          this.isResponseHere = true;
+          return of(null);
+        }
+      })
+    ).subscribe(
       data => {
         this.meal = data;
+        this.isResponseHere = true;
       }
     );
   }

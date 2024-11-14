@@ -21,6 +21,7 @@ export class HospitalsComponent {
   route = inject(ActivatedRoute);
 
   isLoggedIn! : boolean;
+  isResponseHere = false;
   hospitals: Hospital[] = [];
   searchMode: boolean = false;
 
@@ -54,6 +55,7 @@ export class HospitalsComponent {
   }
 
   listHospitals() {
+    this.isResponseHere = false;
     this.searchMode = this.route.snapshot.paramMap.has('keyword');
     
     if (!this.searchMode) {
@@ -79,6 +81,7 @@ export class HospitalsComponent {
       this.hospitals = data.content;
       this.totalElements = data.totalElements;
       this.pageSize = data.size;
+      this.isResponseHere = true;
     }
   }
 }

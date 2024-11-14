@@ -20,9 +20,15 @@
   }
 </div>
 <hr>
-@if(diets.length === 0) {
+@if(isResponseHere) {
+  <div class="calendar-container p-4">
+    <full-calendar [options]="calendarOptions"></full-calendar>
+  </div>
+} @else {
+  <div class="row d-flex align-items-center justify-content-center v-100" style="height: 400px;">
+    <img src="./assets/images/loader.gif" style="width: 120px; height: auto;">
+  </div>
+}
+@if(diets.length === 0 && isResponseHere) {
   <h4>Brak diet w systemie!</h4>
 }
-<div class="calendar-container p-4">
-    <full-calendar [options]="calendarOptions"></full-calendar>
-</div>

@@ -34,6 +34,9 @@ export class MealsComponent {
   router = inject(Router);
 
   isLoggedIn!: boolean;
+  isResponseHere = false;
+  mealsEmpty = true;
+
   meals: Meal[] = [];
   diets: Diet[] = [];
   types = ['wszystkie', 'śniadanie', 'obiad', 'kolacja'];
@@ -97,6 +100,7 @@ export class MealsComponent {
   }
 
   handleSearchMeals() {
+    this.isResponseHere = false;
     const keyword: string = this.route.snapshot.paramMap.get('keyword')!;
     console.log(this.selectedDiet);
     
@@ -104,14 +108,20 @@ export class MealsComponent {
   }
 
   handleListMeals() {
+    this.isResponseHere = false;
     this.mealService.getAllMeals(this.selectedDiet, this.selectedType, this.pageNumber, this.pageSize).subscribe(this.processResult());
   }
 
   processResult() {
+    this.mealsEmpty = true;
     return (data: any) => {
+      if(data.content > 0) {
+        this.mealsEmpty = false;
+      }
       this.meals = data.content;
       this.totalElements = data.totalElements;
       this.pageSize = data.size;
+      this.isResponseHere = true;
     }
   }
 

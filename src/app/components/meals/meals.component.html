@@ -29,7 +29,7 @@
 
 <hr>
 <div class="container-fluid">
-    @if(meals.length > 0) {
+    @if(isResponseHere && mealsEmpty) {
         <div class="row">
             @for(meal of meals; track meal.id) {
                 <div class="col-lg-12 mb-4 p-0">
@@ -85,8 +85,12 @@
                         ></mat-paginator>
           </div>
     }
-    @else {
-        <h3 style="font-weight: 400;">Brak posiłków do wyświetlenia</h3>
+    @else if (!isResponseHere){
+      <div class="row d-flex align-items-center justify-content-center v-100" style="height: 400px;">
+        <img src="./assets/images/loader.gif" style="width: 120px; height: auto;">
+      </div>
+    } @else {
+      <h3 style="font-weight: 400;">Brak posiłków do wyświetlania</h3>
     }
     
 </div>

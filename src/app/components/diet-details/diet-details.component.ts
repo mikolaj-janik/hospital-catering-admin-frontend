@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { catchError, of } from 'rxjs';
 import { Diet } from 'src/app/common/diet';
 import { DietService } from 'src/app/service/diet.service';
 
@@ -17,6 +18,8 @@ export class DietDetailsComponent {
   route = inject(ActivatedRoute);
   router = inject(Router);
 
+  isResponseHere = false;
+
   ngOnInit() {
     this.route.paramMap.subscribe(() => {
       this.handleDietDetails();
@@ -26,9 +29,17 @@ export class DietDetailsComponent {
   handleDietDetails() {
     const dietId: number = +this.route.snapshot.paramMap.get('id')!;
 
-    this.dietService.getDietById(dietId).subscribe(
+    this.dietService.getDietById(dietId).pipe(
+      catchError((err: any) => {
+        if (err.status === 404) {
+          this.isResponseHere = true;
+          return of(null);
+        }
+      })
+    ).subscribe(
       data => {
         this.diet = data;
+        this.isResponseHere = true;
       }
     );
   }

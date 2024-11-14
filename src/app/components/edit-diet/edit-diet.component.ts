@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { catchError, of } from 'rxjs';
 import { Diet } from 'src/app/common/diet';
 import { DietService } from 'src/app/service/diet.service';
 
@@ -21,6 +22,8 @@ export class EditDietComponent {
   diet: Diet = null;
   name = '';
   description = '';
+
+  isResponseHere = false;
 
   dietService = inject(DietService);
   route = inject(ActivatedRoute);
@@ -41,13 +44,21 @@ export class EditDietComponent {
   handleDietDetails() {
     const dietId: number = +this.route.snapshot.paramMap.get('id')!;
 
-    this.dietService.getDietById(dietId).subscribe(
+    this.dietService.getDietById(dietId).pipe(
+      catchError((error) => {
+        if (error.status === 404) {
+          this.isResponseHere = true;
+          return of(null);
+        }
+      })
+    ).subscribe(
       data => {
         this.diet = data;
         this.name = data.name;
         this.description = data.description;
         this.editDietForm.get('name').setValue(data.name);
         this.editDietForm.get('description').setValue(data.description);
+        this.isResponseHere = true;
       }
     );
   }

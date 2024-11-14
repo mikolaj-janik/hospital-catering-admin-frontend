@@ -20,6 +20,7 @@ export class DietComponent {
   route = inject(ActivatedRoute);
 
   isLoggedIn!: boolean;
+  isResponseHere = false;
   searchMode: boolean = false;
   diets: Diet[] = [];
 
@@ -41,6 +42,7 @@ export class DietComponent {
   }
 
   listDiets() {
+    this.isResponseHere = false;
     this.searchMode = this.route.snapshot.paramMap.has('keyword');
     
     if (!this.searchMode) {
@@ -72,6 +74,7 @@ export class DietComponent {
   processResult() {
     return (diets: any) => {
       this.diets = diets;
+      this.isResponseHere = true;
     }
   }
 }

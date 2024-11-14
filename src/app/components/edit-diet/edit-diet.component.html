@@ -1,6 +1,6 @@
 <h2>Diety</h2>
 <hr>
-@if(diet != null) {
+@if(isResponseHere && diet != null) {
     <div class="container-fluid d-flex justify-content-center">
         <div class="card col-lg-6 col-md-9 col-sm-12 px-4" style="padding-top: 25px; padding-bottom: 20px;">
             <h4 class="mb-3">Edytuj dietę</h4>
@@ -31,8 +31,11 @@
             </form>
         </div>
     </div>
-} @else {
+} @else if (!isResponseHere){
+    <div class="row d-flex align-items-center justify-content-center v-100" style="height: 400px;">
+      <img src="./assets/images/loader.gif" style="width: 120px; height: auto;">
+    </div>
+  } @else {
     <h3 style="font-weight: 400;">Nie znaleziono diety</h3>
-}
-
+  }
 

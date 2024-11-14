@@ -1,7 +1,7 @@
 <h2>Diety</h2>
 <hr>
 <div class="container-fluid">
-    @if(diets.length > 0) {
+    @if(isResponseHere && diets.length > 0) {
         <div class="card">
             <table class="table">
                 <thead>
@@ -31,8 +31,12 @@
             </table>
         </div>
     }
-    @else {
+    @else if (!isResponseHere){
+        <div class="row d-flex align-items-center justify-content-center v-100" style="height: 400px;">
+          <img src="./assets/images/loader.gif" style="width: 120px; height: auto;">
+        </div>
+      } @else {
         <h3 style="font-weight: 400;">Brak diet do wyświetlenia</h3>
-    }
+      }
     
 </div>
