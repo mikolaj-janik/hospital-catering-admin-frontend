@@ -4,7 +4,7 @@ import { Meal } from "./meal";
 export class Diary {
     constructor(
         public id: number,
-        public date: Date,
+        public date: string,
         public diet: Diet,
         public breakfast: Meal,
         public lunch: Meal,

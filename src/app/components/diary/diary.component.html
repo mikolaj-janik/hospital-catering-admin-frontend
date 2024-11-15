@@ -10,7 +10,7 @@
     <div class="col-lg-2 col-md-4 ms-md-4">
       <mat-form-field style="background-color: white;">
         <mat-label>rodzaj diety</mat-label>
-        <mat-select name="type" [value]="diets[0].id" (selectionChange)="onDietSelected($event.value)">
+        <mat-select name="type" [value]="selectedDiet" (selectionChange)="onDietSelected($event.value)">
           @for (diet of diets; track diet.id) {
             <mat-option [value]="diet.id">{{ diet.name }}</mat-option>
           }

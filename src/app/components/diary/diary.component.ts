@@ -1,12 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { CalendarOptions } from '@fullcalendar/core'; 
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { DietService } from 'src/app/service/diet.service';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { DiaryService } from 'src/app/service/diary.service';
 import { Diet } from 'src/app/common/diet';
@@ -26,6 +25,7 @@ export class DiaryComponent {
   diaryService = inject(DiaryService);
   dietService = inject(DietService);
   router = inject(Router);
+  route = inject(ActivatedRoute);
   renderer = inject(Renderer2);
 
   diets: Diet[] = [];
@@ -41,7 +41,12 @@ export class DiaryComponent {
   ngOnInit() {
     this.dietService.getAllDietsWithActiveMeals().subscribe((diets: Diet[]) => {
       this.diets = diets;
-      this.selectedDiet = diets[0].id;
+      if (this.route.snapshot.queryParamMap.has('dietId')) {
+        this.selectedDiet = +this.route.snapshot.queryParamMap.get('dietId')!;
+      } else {
+        this.selectedDiet = diets[0].id;
+      }
+      console.log(this.selectedDiet);
       this.handleDietsUpdate(this.selectedDiet);
       this.isResponseHere = true;
     });
@@ -94,8 +99,7 @@ export class DiaryComponent {
   }
 
   onSelectDiaryDetails(diaryId: number) {
-    console.log(diaryId);
-    //TODO
+    this.router.navigate([`meals/diary/${diaryId}`]);
   } 
 
   customDayHeader(arg: any) {
