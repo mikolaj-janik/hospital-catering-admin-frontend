@@ -105,14 +105,19 @@ export class NewDiaryComponent {
         if (this.repeatFor === 'never') {
           this.repeatUntil = '';
         }
-        // TODO: handle repeatFor and repeatUntil
+
+        console.log(repeatFor);
+        console.log(this.repeatUntil);
+
         this.diaryService.addNewDiary(
           {
             dietId: this.diet.id as number,
             breakfastId: breakfastId as number,
             lunchId: lunchId as number,
             supperId: supperId as number,
-            date: this.dateStr
+            date: this.dateStr,
+            repeatFor: repeatFor as string,
+            repeatUntil: this.repeatUntil
           }, 
         ).pipe(
           catchError(() => {

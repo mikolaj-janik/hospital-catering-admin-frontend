@@ -38,7 +38,9 @@ export class DiaryService {
                         breakfastId: number,
                         lunchId: number,
                         supperId: number,
-                        date: string }): Observable<any> {
+                        date: string,
+                        repeatFor: string,
+                        repeatUntil: string }): Observable<any> {
     const headers = this.authService.getAuthHeaders();
     return this.http.post(`${environment.apiUrl}/diary/add`, diary, { headers });
   }
