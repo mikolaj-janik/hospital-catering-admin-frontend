@@ -43,6 +43,13 @@ export class DietService {
     return this.http.get<Diet>(url, { headers });
   }
 
+  getDietByIdFromDiary(id: number): Observable<Diet> {
+    const headers = this.authService.getAuthHeaders();
+    const url = `${environment.apiUrl}/diets/${id}?diary=true`;
+
+    return this.http.get<Diet>(url, { headers });
+  }
+
   getDietByName(keyword: string): Observable<Diet[]> {
     const headers = this.authService.getAuthHeaders();
     const url = `${environment.apiUrl}/diets/search?name=${keyword}`;
@@ -70,7 +77,7 @@ export class DietService {
         } else if (error.status === 400) {
           newDietForm.get('name')?.setErrors({ uniqueNameError: true });
         } else {
-          this.toastr.error('Wystąpił problem z dodawaniem szpitala');
+          this.toastr.error('Wystąpił problem z dodawaniem diety');
         }
         errorMessage = error.error.message;
         console.error(errorMessage);

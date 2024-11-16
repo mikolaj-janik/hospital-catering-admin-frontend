@@ -1,11 +1,12 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { SearchBarService } from './search-bar.service';
 import { AuthService } from './auth.service';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 import { Diary } from '../common/diary';
+import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class DiaryService {
     private authService: AuthService,
     private searchBarService: SearchBarService,
     private http: HttpClient,
-    private toastr: ToastrService 
+    private toastr: ToastrService
   ) {}
 
   getDiariesByDietId(dietId: number): Observable<Diary[]> {
@@ -31,5 +32,14 @@ export class DiaryService {
     const url = `${environment.apiUrl}/diary/${id}`;
 
     return this.http.get<Diary>(url, { headers });
+  }
+
+  addNewDiary(diary: {  dietId: number, 
+                        breakfastId: number,
+                        lunchId: number,
+                        supperId: number,
+                        date: string }): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.post(`${environment.apiUrl}/diary/add`, diary, { headers });
   }
 }

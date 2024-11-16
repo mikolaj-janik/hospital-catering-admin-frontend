@@ -51,8 +51,9 @@ export class DiaryDetailsComponent {
     ).subscribe((data) => {
       this.diary = data;
       this.date = new Date(data.date);
-      const month = (this.date.getMonth() + 1).toString();
-      this.dateStr = this.date.getDate().toString() + '-' + month + '-' + this.date.getFullYear().toString();
+      const month = this.formatDayMonth(this.date.getMonth() + 1)
+      const day = this.formatDayMonth(this.date.getDate());
+      this.dateStr = day + '-' + month + '-' + this.date.getFullYear().toString();
       this.day = this.polishDaysOfWeek[this.date.getDay()];
 
       this.mealService.getMealById(this.diary.breakfast.id).subscribe((meal) => {
@@ -91,4 +92,10 @@ export class DiaryDetailsComponent {
     this.dialogRef.open(PopUpComponent, { data : image });
   }
 
+  formatDayMonth(number: number) {
+    if (number < 10) {
+      return `0${number}`;
+    }
+    return number.toString();
+  }
 }

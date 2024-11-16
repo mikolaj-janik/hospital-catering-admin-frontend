@@ -34,6 +34,20 @@ export class MealService {
     return this.http.get<GetResponseMeals>(url, { headers });
   }
 
+  getMealsByDietIdAndType(dietId: number, type: string): Observable<Meal[]> {
+    if (type === 'breakfast') {
+      type = 'breakfasts';
+    } else if (type === 'lunch') {
+      type = 'lunches';
+    } else {
+      type = 'suppers';
+    }
+    const url = `${environment.apiUrl}/meals/${type}?dietId=${dietId}`;
+    const headers = this.authService.getAuthHeaders();
+    
+    return this.http.get<Meal[]>(url, { headers });
+  }
+
   getMealById(id: number): Observable<Meal> {
     const headers = this.authService.getAuthHeaders();
     const url = `${environment.apiUrl}/meals/${id}`;

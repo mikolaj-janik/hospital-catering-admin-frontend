@@ -95,7 +95,7 @@ export class DiaryComponent {
   };
 
   onSelectAddDiary(date: Date) {
-    //TODO
+    this.router.navigate(['meals/diary/add'], { queryParams: { dietId: this.selectedDiet, date: date.toString() }});
   }
 
   onSelectDiaryDetails(diaryId: number) {
