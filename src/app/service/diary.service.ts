@@ -44,4 +44,11 @@ export class DiaryService {
     const headers = this.authService.getAuthHeaders();
     return this.http.post(`${environment.apiUrl}/diary/add`, diary, { headers });
   }
+
+  updateDiary(diary: {id: number, breakfastId: number, lunchId: number, supperId: number}): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+
+    return this.http
+    .put(`${environment.apiUrl}/diary/update`, diary, { headers });
+  }
 }

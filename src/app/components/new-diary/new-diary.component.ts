@@ -103,11 +103,8 @@ export class NewDiaryComponent {
 
         this.repeatUntil = repeatUntil;
         if (this.repeatFor === 'never') {
-          this.repeatUntil = '';
+          this.repeatUntil = '0';
         }
-
-        console.log(repeatFor);
-        console.log(this.repeatUntil);
 
         this.diaryService.addNewDiary(
           {
@@ -125,7 +122,7 @@ export class NewDiaryComponent {
             return of(null);
           }) 
         ).subscribe(() => {
-          this.toastr.success('Pomyślnie zaktualizowano jadłospis');
+          this.toastr.success('Pomyślnie dodano do jadłospisu');
           this.router.navigate(['meals/diary'], { queryParams: { dietId: this.diet.id } });
         });
     }

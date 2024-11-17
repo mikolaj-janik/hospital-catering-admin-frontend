@@ -58,6 +58,7 @@ import { EditMealComponent } from './components/edit-meal/edit-meal.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { DiaryDetailsComponent } from './components/diary-details/diary-details.component';
 import { NewDiaryComponent } from './components/new-diary/new-diary.component';
+import { EditDiaryComponent } from './components/edit-diary/edit-diary.component';
 
 
 const routes: Routes = [
@@ -78,6 +79,7 @@ const routes: Routes = [
   {path: 'meals/diary', component: DiaryComponent, canActivate: [authGuard]},
   {path: 'meals/diary/add', component: NewDiaryComponent, canActivate: [authGuard]},
   {path: 'meals/diary/:id', component: DiaryDetailsComponent, canActivate: [authGuard]},
+  {path: 'meals/diary/edit/:id', component: EditDiaryComponent, canActivate: [authGuard]},
   {path: 'login', component: LoginComponent, canActivate: [authGuardLogin]},
   {path: 'logout', component: LoginComponent, canActivate: [authGuardLogin]},
   {path: '', redirectTo: '/hospitals', pathMatch: 'full'},

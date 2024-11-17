@@ -67,11 +67,10 @@ export class DiaryDetailsComponent {
           this.mealService.getMealById(this.diary.supper.id).subscribe((meal) => {
             this.supper = meal;
             this.meals.push(meal);
+            this.isResponseHere = true;
           });
         });
       });
-
-      this.isResponseHere = true;
     });
   }
 
@@ -84,8 +83,7 @@ export class DiaryDetailsComponent {
   }
 
   redirectToEdit(diaryId: number) {
-    // TODO
-    console.log(diaryId);
+    this.router.navigate([`meals/diary/edit/${diaryId}`]);
   }
 
   openDialog(image: string) {

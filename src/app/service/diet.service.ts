@@ -38,7 +38,7 @@ export class DietService {
 
   getDietById(id: number): Observable<Diet> {
     const headers = this.authService.getAuthHeaders();
-    const url = `${environment.apiUrl}/diets/${id}`;
+    const url = `${environment.apiUrl}/diets/${id}?diary=false`;
 
     return this.http.get<Diet>(url, { headers });
   }

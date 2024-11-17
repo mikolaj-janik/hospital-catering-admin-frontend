@@ -86,6 +86,11 @@ export class CustomSidenavComponent {
           route: 'addMeal'
         },
         {
+          icon: 'far fa-calendar-alt',
+          label: 'Jadłospis',
+          route: 'diary'
+        },
+        {
           icon: 'fas fa-carrot',
           label: 'Diety',
           route: 'diets',
@@ -94,11 +99,6 @@ export class CustomSidenavComponent {
           icon: 'far fa-calendar-plus',
           label: 'Dodaj dietę',
           route: 'addDiet',
-        },
-        {
-          icon: 'far fa-calendar-alt',
-          label: 'Jadłospis',
-          route: 'diary'
         }
       ]
     }
