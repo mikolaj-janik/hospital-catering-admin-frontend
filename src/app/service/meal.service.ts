@@ -82,6 +82,12 @@ export class MealService {
     return this.http
     .put(`${environment.apiUrl}/meals/update`, formData, { headers });
   }
+
+  deleteMealById(id: number): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+    const url = `${environment.apiUrl}/meals/delete/${id}`;
+    return this.http.delete(url, { headers });
+  }
 }
 
 interface GetResponseMeals {

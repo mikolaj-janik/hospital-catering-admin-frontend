@@ -1,6 +1,9 @@
 @if(isResponseHere && !isIncorrectRequest) {
     <h2 class="ms-1">{{ dateStr }}{{" " + day}} <h5 class="mt-1">dieta {{ diet.name }}</h5></h2>
 <hr>
+<p>
+    <button class="btn" style="color: rgb(255, 255, 255); background-color: rgb(134, 134, 134);" (click)="redirectToDiary(diet.id)">Wstecz</button>
+</p>
 <div class="container-fluid d-flex justify-content-center">
     <div class="card col-lg-6 col-md-9 col-sm-10 px-4" style="padding-top: 25px; padding-bottom: 20px;">
         <form [formGroup]="newDiaryForm" (ngSubmit)="addNewDiary()">

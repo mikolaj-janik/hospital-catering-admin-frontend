@@ -72,7 +72,7 @@ export class CustomSidenavComponent {
     },
     {
       icon: 'fas fa-users',
-      label: 'Użytkownicy',
+      label: 'Dietetycy',
       route: 'dieticians'
     },
     {

@@ -59,6 +59,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { DiaryDetailsComponent } from './components/diary-details/diary-details.component';
 import { NewDiaryComponent } from './components/new-diary/new-diary.component';
 import { EditDiaryComponent } from './components/edit-diary/edit-diary.component';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 
 const routes: Routes = [
@@ -122,6 +123,7 @@ const routes: Routes = [
     MatDialogModule,
     ToastrModule.forRoot(),
     RouterModule.forRoot(routes),
+    SweetAlert2Module.forRoot(),
     CustomSidenavComponent,
     SearchBarComponent,
     SearchOverlayComponent,

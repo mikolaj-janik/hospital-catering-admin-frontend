@@ -139,6 +139,10 @@ export class NewDiaryComponent {
     console.log(this.repeatUntil);
   }
 
+  redirectToDiary(dietId: number) {
+    this.router.navigate(['meals/diary'], { queryParams: { dietId: dietId } });
+  }
+
   formatDayMonth(number: number) {
     if (number < 10) {
       return `0${number}`;

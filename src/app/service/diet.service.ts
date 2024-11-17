@@ -85,4 +85,10 @@ export class DietService {
       })
     );
   }
+
+  deleteDietById(id: number): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+    const url = `${environment.apiUrl}/diets/delete/${id}`;
+    return this.http.delete(url, { headers });
+  }
 }
