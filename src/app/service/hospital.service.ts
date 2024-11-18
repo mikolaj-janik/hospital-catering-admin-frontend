@@ -49,6 +49,13 @@ export class HospitalService {
     );
   }
 
+  getHospitalById(id: number): Observable<Hospital> {
+    const headers = this.authService.getAuthHeaders();
+    const url = `${environment.apiUrl}/hospitals/${id}`;
+
+    return this.http.get<Hospital>(url, { headers });
+  }
+
   getHospitalsByName(pageNumber: number, pageSize: number, searchTerm: string): Observable<GetResponseHospitals> {
     const url = `${environment.apiUrl}/hospitals/search?name=${searchTerm}&page=${pageNumber}&size=${pageSize}`;
     const headers = this.authService.getAuthHeaders();

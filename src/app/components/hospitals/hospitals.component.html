@@ -18,7 +18,7 @@
                   <p class="card-text mb-0">{{ hospital.zipCode }}</p>
                   <p class="card-text">{{ hospital.city }}</p>
                   <p class="card-text">Nr. tel. {{ hospital.phoneNumber }}</p>
-                  <a href="#!" class="btn btn-primary">Zobacz szczegóły</a>
+                  <button (click)="redirectToHospitalDetails(hospital.id)" class="btn btn-primary">Zobacz oddziały</button>
                 </div>
               </div>
         </div>

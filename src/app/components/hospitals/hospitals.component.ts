@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { inject } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Hospital } from 'src/app/common/hospital';
 import { AuthService } from 'src/app/service/auth.service';
 import { HospitalService } from 'src/app/service/hospital.service';
@@ -19,6 +19,7 @@ export class HospitalsComponent {
   hospitalService = inject(HospitalService);
   authService = inject(AuthService);
   route = inject(ActivatedRoute);
+  router = inject(Router);
 
   isLoggedIn! : boolean;
   isResponseHere = false;
@@ -74,6 +75,10 @@ export class HospitalsComponent {
 
   handleListHospitals() {
     this.hospitalService.getAllHospitals(this.pageNumber, this.pageSize).subscribe(this.processResult());
+  }
+
+  redirectToHospitalDetails(id: number) {
+    this.router.navigate([`hospitals//details/${id}`]);
   }
 
   processResult() {

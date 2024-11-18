@@ -35,7 +35,7 @@ export class NewHospitalComponent {
   phoneExtension = '+48 ';
 
   zipCodePattern = '[0-9]{2}-[0-9]{3}';
-  phoneNumberPattern = '^(?:\\d\\s?){9,12}$';
+  phoneNumberPattern = '^(\\d{2}\\s?\\d{3}\\s?\\d{2}\\s?\\d{2}|\\d{2}\\s?\\d{4}\\s?\\d{3}|\\d{3}\\s?\\d{3}\\s?\\d{3})$';
   camelCasePattern = '^[A-Z].*$';
 
   hospitalService = inject(HospitalService);
