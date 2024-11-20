@@ -25,4 +25,11 @@ export class DieticianService {
 
     return this.http.get<Dietician[]>(url, { headers });
   }
+
+  getDieticiansByWardId(id: number): Observable<Dietician[]> {
+    const headers = this.authService.getAuthHeaders();
+    const url = `${environment.apiUrl}/wards/${id}/dieticians`;
+
+    return this.http.get<Dietician[]>(url, { headers });
+  }
 }

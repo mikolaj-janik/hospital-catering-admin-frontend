@@ -59,6 +59,10 @@ export class HospitalDetailsComponent {
     this.router.navigate([`hospitals/${this.hospital.id}/addWard`]);
   }
 
+  redirectToEditWard(wardId: number) {
+    this.router.navigate([`hospitals/editWard/${wardId}`]);
+  }
+
   redirectToWardDetails(wardId: number) {
     // TODO
   }

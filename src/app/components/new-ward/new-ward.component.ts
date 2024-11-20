@@ -32,6 +32,7 @@ export class NewWardComponent {
   toastr = inject(ToastrService);
 
   isResponseHere = false;
+  doDieticiansExist = true;
 
   hospital: Hospital = null;
 
@@ -64,6 +65,11 @@ export class NewWardComponent {
 
       this.dieticianService.getDieticiansByHospitalId(data.id).subscribe((data) => {
         this.dieticians = data;
+
+        if (data.length === 0) {
+          this.doDieticiansExist = false;
+        }
+        
         data.forEach(() => this.isChosenDietician.push(false));
         this.isResponseHere = true;
       });
@@ -86,7 +92,6 @@ export class NewWardComponent {
         this.toastr.success('Pomyślnie dodano nowy oddział');
         this.router.navigate([`hospitals/details/${this.hospital.id}`]);
       });
-
     }
   }
 
@@ -102,8 +107,8 @@ export class NewWardComponent {
             if (this.chosenDieticians[j].id === dieticianId) {
               indexToDelete = j;
             }
-            this.chosenDieticians.splice(j, 1);
           }
+          this.chosenDieticians.splice(indexToDelete, 1);
         } else {
           this.chosenDieticians.push(this.dieticians[i]);
         }

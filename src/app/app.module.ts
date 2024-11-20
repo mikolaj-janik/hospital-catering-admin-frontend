@@ -62,12 +62,14 @@ import { EditDiaryComponent } from './components/edit-diary/edit-diary.component
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { HospitalDetailsComponent } from './components/hospital-details/hospital-details.component';
 import { NewWardComponent } from './components/new-ward/new-ward.component';
+import { EditWardComponent } from './components/edit-ward/edit-ward.component';
 
 
 const routes: Routes = [
   {path: 'hospitals', component: HospitalsComponent, canActivate: [authGuard]},
   {path: 'hospitals/details/:id', component: HospitalDetailsComponent, canActivate: [authGuard]},
   {path: 'hospitals/:id/addWard', component: NewWardComponent, canActivate: [authGuard]},
+  {path: 'hospitals/editWard/:id', component: EditWardComponent, canActivate: [authGuard]},
   {path: 'hospitals/search/:keyword', component: HospitalsComponent, canActivate: [authGuard]},
   {path: 'hospitals/add', component: NewHospitalComponent, canActivate: [authGuard]},
   {path: 'dieticians', component: DieticiansComponent, canActivate: [authGuard]},

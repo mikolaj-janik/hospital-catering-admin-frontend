@@ -28,10 +28,27 @@ export class WardService {
     return this.http.get<Ward[]>(url, { headers });
   }
 
+  getWardById(id: number): Observable<Ward> {
+    const headers = this.authService.getAuthHeaders();
+    const url = `${environment.apiUrl}/wards/${id}`;
+
+    return this.http.get<Ward>(url, { headers });
+  }
+
   createWard(newWard: { name: string, phoneNumber: string, hospital: Hospital, dieticians: Dietician[] }): Observable<any> {
     const headers = this.authService.getAuthHeaders();
     const url = `${environment.apiUrl}/wards/add`;
 
     return this.http.post(url, newWard, { headers });
+  }
+
+  updateWard(editedWard: { id: number, 
+                           name: string, 
+                           phoneNumber: string, 
+                           dieticians: Dietician[] }): Observable<any> {
+  const headers = this.authService.getAuthHeaders();
+  const url = `${environment.apiUrl}/wards/update`;
+                        
+  return this.http.put(url, editedWard, { headers });                    
   }
 }
