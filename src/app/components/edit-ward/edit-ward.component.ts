@@ -101,8 +101,8 @@ export class EditWardComponent {
     });
   }
 
-  redirectToHospitalDetails() {
-    this.router.navigate([`hospitals/details/${this.ward.hospital.id}`]);
+  redirectToWardDetails() {
+    this.router.navigate([`hospitals/ward/${this.ward.id}`]);
   }
 
   handleAddDietician(dieticianId: number) {
@@ -159,7 +159,7 @@ export class EditWardComponent {
             }
           ).subscribe(() => {
             this.toastr.success('Pomyślnie zaktualizowano oddział');
-            this.router.navigate([`hospitals/details/${this.ward.hospital.id}`]);
+            this.router.navigate([`hospitals/ward/${this.ward.id}`]);
           });
         }
       } else if (this.hasDieticians) {

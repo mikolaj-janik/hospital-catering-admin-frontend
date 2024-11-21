@@ -3,8 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
 import { Hospital } from 'src/app/common/hospital';
+import { Patient } from 'src/app/common/patient';
 import { Ward } from 'src/app/common/ward';
 import { HospitalService } from 'src/app/service/hospital.service';
+import { PatientService } from 'src/app/service/patient.service';
 import { WardService } from 'src/app/service/ward.service';
 
 @Component({
@@ -17,6 +19,7 @@ import { WardService } from 'src/app/service/ward.service';
 export class HospitalDetailsComponent {
 
   hospitalService = inject(HospitalService);
+  patientService = inject(PatientService);
   wardService = inject(WardService);
   route = inject(ActivatedRoute);
   router = inject(Router);
@@ -26,6 +29,7 @@ export class HospitalDetailsComponent {
 
   hospital: Hospital = null;
   wards: Ward[] = [];
+  patients: Patient[] = [];
 
   ngOnInit() {
     const hospitalId = +this.route.snapshot.paramMap.get('id')!;
@@ -59,11 +63,7 @@ export class HospitalDetailsComponent {
     this.router.navigate([`hospitals/${this.hospital.id}/addWard`]);
   }
 
-  redirectToEditWard(wardId: number) {
-    this.router.navigate([`hospitals/editWard/${wardId}`]);
-  }
-
   redirectToWardDetails(wardId: number) {
-    // TODO
+    this.router.navigate([`hospitals/ward/${wardId}`]);
   }
 }

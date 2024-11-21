@@ -14,6 +14,7 @@
                             <th scope="col"></th>
                             <th scope="col">nazwa oddziału</th>
                             <th scope="col">telefon</th> 
+                            <th scope="col">liczba pacjentów</th>
                             <th scope="col">szczegóły</th> 
                         </tr>
                     </thead>
@@ -22,7 +23,8 @@
                             <tr>
                                <th scope="row">{{ findArrayIndex(ward.id) + 1 }}</th>
                                <td>{{ ward.name }}</td> 
-                               <td>{{ ward.phoneNumber }}</td> 
+                               <td>{{ ward.phoneNumber }}</td>
+                               <td>TODO</td> 
                                <td>
                                     <button
                                         type="button"
@@ -30,14 +32,6 @@
                                         (click)="redirectToWardDetails(ward.id)"
                                         >
                                      więcej
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        class="btn btn-info btn-rounded btn-md ms-2"
-                                        (click)="redirectToEditWard(ward.id)"
-                                        >
-                                     Edytuj
                                     </button>
                                 </td>
                             </tr>

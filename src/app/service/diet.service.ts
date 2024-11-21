@@ -43,6 +43,13 @@ export class DietService {
     return this.http.get<Diet>(url, { headers });
   }
 
+  getDietsByWardId(wardId: number): Observable<Diet[]> {
+    const headers = this.authService.getAuthHeaders();
+    const url = `${environment.apiUrl}/diets/ward/${wardId}`;
+
+    return this.http.get<Diet[]>(url, { headers });
+  }
+
   getDietByIdFromDiary(id: number): Observable<Diet> {
     const headers = this.authService.getAuthHeaders();
     const url = `${environment.apiUrl}/diets/${id}?diary=true`;
