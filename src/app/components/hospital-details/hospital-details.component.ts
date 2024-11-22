@@ -46,7 +46,11 @@ export class HospitalDetailsComponent {
       
       this.wardService.getWardsByHospitalId(hospitalId).subscribe((data) => {
         this.wards = data;
-        this.isResponseHere = true;
+
+        this.patientService.getPatientsByHospitalId(hospitalId).subscribe((data) => {
+          this.patients = data;
+          this.isResponseHere = true;
+        });
       });
     });
   }
@@ -61,6 +65,16 @@ export class HospitalDetailsComponent {
 
   redirectToAddWard() {
     this.router.navigate([`hospitals/${this.hospital.id}/addWard`]);
+  }
+
+  getPatientsQuantity(wardId: number) {
+    let quantity = 0;
+    this.patients.forEach((patient) => {
+      if (patient.ward.id === wardId) {
+        quantity++;
+      }
+    });
+    return quantity;
   }
 
   redirectToWardDetails(wardId: number) {

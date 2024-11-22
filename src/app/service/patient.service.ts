@@ -23,4 +23,11 @@ export class PatientService {
 
     return this.http.get<Patient[]>(url, { headers });
   }
+
+  getPatientsByHospitalId(id: number): Observable<Patient[]> {
+    const headers = this.authService.getAuthHeaders();
+    const url = `${environment.apiUrl}/patients/hospital/${id}`;
+
+    return this.http.get<Patient[]>(url, { headers });
+  }
 }
