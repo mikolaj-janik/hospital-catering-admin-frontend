@@ -8,6 +8,8 @@ import { DieticianService } from 'src/app/service/dietician.service';
 import { WardService } from 'src/app/service/ward.service';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2';
+import { PopUpComponent } from '../pop-up/pop-up.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dietician-details',
@@ -20,6 +22,7 @@ export class DieticianDetailsComponent {
 
   isResponseHere = false;
 
+  dialogRef = inject(MatDialog);
   router = inject(Router);
   route = inject(ActivatedRoute);
   dieticianService = inject(DieticianService);
@@ -71,6 +74,10 @@ export class DieticianDetailsComponent {
 
   redirectToHospitalDetails() {
     this.router.navigate([`hospitals/details/${this.dietician.hospital.id}`], { queryParams: { dieticianId: this.dietician.id }});
+  }
+
+  openDialog(image: string) {
+    this.dialogRef.open(PopUpComponent, { data : image });
   }
 
   handleDeleteDietician() {

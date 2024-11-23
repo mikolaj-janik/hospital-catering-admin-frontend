@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 import { Dietician } from '../common/dietician';
 import { environment } from 'src/environments/environment';
+import { Ward } from '../common/ward';
 
 @Injectable({
   providedIn: 'root'
@@ -45,5 +46,21 @@ export class DieticianService {
     const url = `${environment.apiUrl}/wards/${id}/dieticians`;
 
     return this.http.get<Dietician[]>(url, { headers });
+  }
+
+  registerDietician(dietician: {name: string, surname: string, 
+                                email: string, defaultPassword: string,  
+                                hospitalId: number, wards: Ward[]}): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+    const url = `${environment.apiUrl}/dieticians/register`;
+
+    return this.http.post(url, dietician, {headers});                              
+  }
+
+  uploadPicture(dieticianId: number, formData: FormData): Observable<Dietician> {
+    const headers = this.authService.getAuthHeadersWithFile();
+
+    return this.http
+    .post<Dietician>(`${environment.apiUrl}/dieticians/uploadPicture?dieticianId=${dieticianId}`, formData, { headers });
   }
 }

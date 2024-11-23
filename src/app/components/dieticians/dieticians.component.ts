@@ -34,7 +34,6 @@ export class DieticiansComponent {
   }
 
   listDieticians() {
-    console.log(this.selectedHospitalId);
     this.dietitianService.getAllDieticians(this.selectedHospitalId).subscribe((data) => {
       this.dieticians = data;
       this.isResponseHere = true;

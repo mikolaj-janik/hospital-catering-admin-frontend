@@ -29,6 +29,13 @@ export class HospitalService {
     return this.http.get<GetResponseHospitals>(url, { headers });
   }
 
+  getAllHospitalsList(): Observable<Hospital[]> {
+    const headers = this.authService.getAuthHeaders();
+    const url = `${environment.apiUrl}/hospitals/list`;
+
+    return this.http.get<Hospital[]>(url, { headers });
+  }
+
   addNewHospital(formData: FormData): Observable<any> {
     const headers = this.authService.getAuthHeadersWithFile();
 

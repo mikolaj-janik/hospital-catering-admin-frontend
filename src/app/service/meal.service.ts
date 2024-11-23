@@ -67,7 +67,7 @@ export class MealService {
        if (error.status === 0) {
           this.authService.handleServerConnectionError();
         } else {
-          this.toastr.error('Wystąpił problem z dodawaniem szpitala');
+          this.toastr.error('Wystąpił problem z dodawaniem posiłku');
         }
         errorMessage = error.error.message;
         console.error(errorMessage);
