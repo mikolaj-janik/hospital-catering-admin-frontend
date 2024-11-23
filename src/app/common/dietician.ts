@@ -6,6 +6,7 @@ export class Dietician {
         public email: string,
         public name: string,
         public surname: string,
-        public hospital: Hospital
+        public hospital: Hospital,
+        public picture: string
     ){}
 }

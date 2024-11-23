@@ -2,21 +2,21 @@
 <hr>
 <div class="container-fluid">
     @if(isResponseHere && diets.length > 0) {
-        <div class="card">
+        <div class="row flex-column align-items-center">
             <table class="table">
                 <thead>
                     <tr>
                         <th scope="col"></th>
                         <th scope="col">nazwa</th>
-                        <th scope="col">szczegóły</th> 
+                        <th scope="col ms-3">szczegóły</th> 
                     </tr>
                 </thead>
                 <tbody>
                     @for(diet of diets; track diet.id) {
                         <tr>
-                           <th scope="row">{{ findArrayIndex(diet.id) + 1 }}</th>
-                           <td>{{ diet.name }}</td> 
-                           <td>
+                            <th scope="row">{{ findArrayIndex(diet.id) + 1 }}</th>
+                            <td>{{ diet.name }}</td> 
+                            <td>
                                 <button
                                     type="button"
                                     class="btn btn-link btn-rounded btn-sm"

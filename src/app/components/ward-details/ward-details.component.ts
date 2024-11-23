@@ -30,6 +30,7 @@ export class WardDetailsComponent {
   toastr = inject(ToastrService);
 
   isResponseHere = false;
+  requestFromDieticianDetails = 0;
 
   ward: Ward = null;
   patients: Patient[] = [];
@@ -38,6 +39,10 @@ export class WardDetailsComponent {
 
   ngOnInit() {
     const wardId = +this.route.snapshot.paramMap.get('id')!;
+
+    if (this.route.snapshot.queryParamMap.has('dieticianId') && +this.route.snapshot.queryParamMap.get('dieticianId') > 0) {
+      this.requestFromDieticianDetails = +this.route.snapshot.queryParamMap.get('dieticianId');
+    } 
 
     this.wardService.getWardById(wardId).pipe(
       catchError((error) => {
@@ -83,7 +88,15 @@ export class WardDetailsComponent {
     this.router.navigate([`hospitals/editWard/${this.ward.id}`]);
   }
 
+  redirectToDieticianDetails(id: number) {
+    this.router.navigate([`dieticians/details/${id}`], { queryParams: { wardId: this.ward.id }});
+  }
+
   redirectToHospitalDetails() {
-    this.router.navigate([`hospitals/details/${this.ward.hospital.id}`]);
+    if (this.requestFromDieticianDetails === 0) {
+      this.router.navigate([`hospitals/details/${this.ward.hospital.id}`]);
+    } else {
+      this.router.navigate([`dieticians/details/${this.requestFromDieticianDetails}`]);
+    }
   }
 }

@@ -28,6 +28,13 @@ export class WardService {
     return this.http.get<Ward[]>(url, { headers });
   }
 
+  getWardsByDieticianId(id: number): Observable<Ward[]> {
+    const headers = this.authService.getAuthHeaders();
+    const url = `${environment.apiUrl}/wards?dieticianId=${id}`;
+
+    return this.http.get<Ward[]>(url, { headers });
+  }
+
   getWardById(id: number): Observable<Ward> {
     const headers = this.authService.getAuthHeaders();
     const url = `${environment.apiUrl}/wards/${id}`;

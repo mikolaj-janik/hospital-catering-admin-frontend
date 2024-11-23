@@ -61,6 +61,12 @@ export class HospitalService {
     const headers = this.authService.getAuthHeaders();
     return this.http.get<GetResponseHospitals>(url, { headers });
   }
+
+  getHospitalsThatHaveDieticians(): Observable<Hospital[]> {
+    const url = `${environment.apiUrl}/hospitals/allWithDieticians`;
+    const headers = this.authService.getAuthHeaders();
+    return this.http.get<Hospital[]>(url, { headers });
+  }
 }
 
 interface GetResponseHospitals {

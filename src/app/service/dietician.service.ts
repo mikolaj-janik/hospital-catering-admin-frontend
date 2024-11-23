@@ -19,6 +19,13 @@ export class DieticianService {
     private toastr: ToastrService 
   ) {}
 
+  getDieticianById(id: number): Observable<Dietician> {
+    const headers = this.authService.getAuthHeaders();
+    const url = `${environment.apiUrl}/dieticians/${id}`;
+
+    return this.http.get<Dietician>(url, { headers });
+  }
+
   getDieticiansByHospitalId(id: number): Observable<Dietician[]> {
     const headers = this.authService.getAuthHeaders();
     const url = `${environment.apiUrl}/hospitals/${id}/dieticians`;
@@ -28,7 +35,7 @@ export class DieticianService {
 
   getAllDieticians(hospitalId: number = 0) {
     const headers = this.authService.getAuthHeaders();
-    const url = `${environment.apiUrl}/dieticians/?hospitalId=${hospitalId}`;
+    const url = `${environment.apiUrl}/dieticians?hospitalId=${hospitalId}`;
 
     return this.http.get<Dietician[]>(url, { headers });
   }

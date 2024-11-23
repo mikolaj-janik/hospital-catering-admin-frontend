@@ -73,7 +73,14 @@ export class CustomSidenavComponent {
     {
       icon: 'fas fa-users',
       label: 'Dietetycy',
-      route: 'dieticians'
+      route: 'dieticians',
+      subItems: [
+        {
+          icon: 'fas fa-user-plus',
+          label: 'Rejestracja',
+          route: 'register'
+        }
+      ]
     },
     {
       icon: 'fas fa-utensils',
