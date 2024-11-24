@@ -87,12 +87,22 @@
                             <p style="margin-bottom: 0px;">
                                 <mat-checkbox
                                 color="primary"
+                                aria-checked="true"
+                                [checked]="isWardSelected(ward.id)"
                                 (change)="handleSelectWard(ward.id)"
                                 >
                                     {{ ward.name }}
                                 </mat-checkbox>
                             </p>
                         }
+                        <p style="margin-bottom: 0px;">
+                            <mat-checkbox
+                            color="primary"
+                            (change)="handleSelectAll()"
+                            >
+                                <b>zaznacz wszystkie</b>
+                            </mat-checkbox>
+                        </p>
                     </div>  
                 } @else {
                     <p class="mb-4">Szpital nie posiada oddziałów</p>

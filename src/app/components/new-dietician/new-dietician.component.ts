@@ -36,6 +36,7 @@ export class NewDieticianComponent {
   isUploadedOnlyOneFile = true;
   isValidFileFormat = true;
   isHospitalChosen = false;
+  isSelectAllSelected = false;
 
   hospitals: Hospital[] = [];
   wards: Ward[] = [];
@@ -89,6 +90,29 @@ export class NewDieticianComponent {
         }
       }
     }
+    console.log('-----------');
+    for(let i = 0; i < this.chosenWards.length; i++) {
+      console.log(this.chosenWards[i].name);
+    }
+    console.log('-----------');
+  }
+
+  handleSelectAll() {
+    this.isSelectAllSelected = !this.isSelectAllSelected;
+
+    if (this.isSelectAllSelected) {
+      for (let i = 0; i < this.wards.length; i++) {
+        if (!this.isChosenWard[i]) {
+          this.isChosenWard[i] = true;
+          this.chosenWards.push(this.wards[i]);
+        }
+      }
+    }
+    console.log('-----------');
+    for(let i = 0; i < this.chosenWards.length; i++) {
+      console.log(this.chosenWards[i].name);
+    }
+    console.log('-----------');
   }
 
   handleFileUpload(event: any) {
@@ -124,6 +148,18 @@ export class NewDieticianComponent {
 
   toggleHiddenPassword() {
     this.hiddenPassword = !this.hiddenPassword;
+  }
+
+  isWardSelected(id: number) {
+    for (let i = 0; i < this.wards.length; i++) {
+      if (this.wards[i].id === id) {
+        if (this.isChosenWard[i]) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
   }
 
   submitNewDietician() {

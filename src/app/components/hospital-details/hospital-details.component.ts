@@ -8,11 +8,13 @@ import { Ward } from 'src/app/common/ward';
 import { HospitalService } from 'src/app/service/hospital.service';
 import { PatientService } from 'src/app/service/patient.service';
 import { WardService } from 'src/app/service/ward.service';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-hospital-details',
   standalone: true,
-  imports: [],
+  imports: [SweetAlert2Module],
   templateUrl: './hospital-details.component.html',
   styleUrl: './hospital-details.component.scss'
 })
@@ -27,6 +29,7 @@ export class HospitalDetailsComponent {
 
   isResponseHere = false;
   requestFromDieticianDetails = 0;
+  isErrorResponse = false;
 
   hospital: Hospital = null;
   wards: Ward[] = [];
@@ -89,5 +92,31 @@ export class HospitalDetailsComponent {
 
   redirectToWardDetails(wardId: number) {
     this.router.navigate([`hospitals/ward/${wardId}`]);
+  }
+
+  handleDeleteWard(wardId: number) {
+    this.wardService.deleteWardById(wardId).pipe(
+      catchError((error) => {
+        if (error.status === 400) {
+          this.isErrorResponse = true;
+          const errorMessage = error.error.message;
+
+          if (errorMessage.includes('patients')) {
+            Swal.fire("Oddział posiada pacjentów", "Jeżeli chcesz usunąć oddział, upewnij się, że nie ma przypisanych żadnych pacjentów", 'error');
+
+          } else if (errorMessage.includes('dieticians')) {
+            Swal.fire("Oddział ma przypisanych dietetyków", "Jeżeli chcesz usunąć oddział, upewnij się, że nie ma przypisanego żadnego dietetyka", 'error');
+          }
+          
+          return of(null);
+        }
+      })
+    ).subscribe(() => {
+      if (!this.isErrorResponse) {
+        Swal.fire("Oddział został usunięty", "Oddział został usunięty pomyślnie", 'success').then(() => {
+          window.location.reload();
+        });
+      }
+    });
   }
 }

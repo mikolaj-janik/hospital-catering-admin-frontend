@@ -138,34 +138,29 @@ export class EditWardComponent {
 
   editWardSubmit() {
     if (this.editWardForm.valid) {
-      if (this.chosenDieticians.length > 0 || this.dieticians.length === 0) {
-        const { name, phoneNumber } = this.editWardForm.value;
-        const dieticians = this.chosenDieticians;
+      const { name, phoneNumber } = this.editWardForm.value;
+      const dieticians = this.chosenDieticians;
 
-        const polishPhoneNumber = `+48 ${phoneNumber}`;
+      const polishPhoneNumber = `+48 ${phoneNumber}`;
         
-        if (name === this.ward.name && 
-            polishPhoneNumber === this.ward.phoneNumber &&
-            !this.areAnyChanges
-        ) {
-          this.toastr.info("Nic nie zostało zmienione");
-        } else {
-          this.wardService.updateWard(
-            {
-              id: this.ward.id,
-              name: name as string,
-              phoneNumber: polishPhoneNumber as string,
-              dieticians: dieticians
-            }
-          ).subscribe(() => {
-            this.toastr.success('Pomyślnie zaktualizowano oddział');
-            this.router.navigate([`hospitals/ward/${this.ward.id}`]);
-          });
-        }
-      } else if (this.hasDieticians) {
-        Swal.fire("Oddział musi posiadać dietetyka!", "Upewnij się że oddział posiada przypisanego przynajmniej jednego dietetyka.", 'error');
+      if (name === this.ward.name && 
+          polishPhoneNumber === this.ward.phoneNumber &&
+          !this.areAnyChanges
+      ) {
+        this.toastr.info("Nic nie zostało zmienione");
+      } else {
+        this.wardService.updateWard(
+          {
+            id: this.ward.id,
+            name: name as string,
+            phoneNumber: polishPhoneNumber as string,
+            dieticians: dieticians
+          }
+        ).subscribe(() => {
+          this.toastr.success('Pomyślnie zaktualizowano oddział');
+          this.router.navigate([`hospitals/ward/${this.ward.id}`]);
+        });
       }
     }
   }
-
 }

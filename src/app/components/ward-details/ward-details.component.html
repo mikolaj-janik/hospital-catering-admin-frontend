@@ -13,13 +13,19 @@
             <p>{{ ward.phoneNumber }}</p>
             <hr>
             <h5 class="mt-4">Dietetycy: </h5>
-            @for(dietician of dieticians; track dietician.id) {
-                <p style="margin-bottom: 20px;">
-                    <a role="button" title="Kliknij, aby zobaczyć szczegóły dietetyka" (click)="redirectToDieticianDetails(dietician.id)">
-                        {{ dietician.name }} {{ dietician.surname }} {{dietician.email}}
-                    </a>
-                </p>
+            
+            @if(dieticians.length > 0) {
+                @for(dietician of dieticians; track dietician.id) {
+                    <p style="margin-bottom: 20px;">
+                        <a role="button" title="Kliknij, aby zobaczyć szczegóły dietetyka" (click)="redirectToDieticianDetails(dietician.id)">
+                            {{ dietician.name }} {{ dietician.surname }} {{dietician.email}}
+                        </a>
+                    </p>
+                }
+            } @else {
+                <p>Brak dietetyków</p>
             }
+            
             <hr>
             <h5 class="mt-4">Liczba pacjentów:</h5>
             @for(diet of diets; track diet.id) {

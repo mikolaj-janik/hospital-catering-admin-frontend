@@ -58,4 +58,11 @@ export class WardService {
                         
   return this.http.put(url, editedWard, { headers });                    
   }
+
+  deleteWardById(id: number): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+    const url = `${environment.apiUrl}/wards/${id}`;
+
+    return this.http.delete(url, { headers });
+  }
 }

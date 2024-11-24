@@ -63,4 +63,11 @@ export class DieticianService {
     return this.http
     .post<Dietician>(`${environment.apiUrl}/dieticians/uploadPicture?dieticianId=${dieticianId}`, formData, { headers });
   }
+
+  deleteDieticianById(dieticianId: number): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+    const url = `${environment.apiUrl}/dieticians/${dieticianId}`;
+
+    return this.http.delete(url, { headers });
+  }
 }
