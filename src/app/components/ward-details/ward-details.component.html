@@ -1,11 +1,21 @@
-@if(isResponseHere && ward) {
+@if(ward) {
     <h2>{{ ward.name }}</h2>
     <hr>
     <p class="ms-3">
         <button class="btn" style="color: white; background-color: rgb(136, 136, 136);" (click)="redirectToHospitalDetails()">Wstecz</button>
-        <button class="btn btn-primary ms-3" (click)="redirectToEditWard()">Edytuj informacje o oddziale</button>
+        <button class="btn btn-primary ms-3 me-5" (click)="redirectToEditWard()">Edytuj informacje o oddziale</button>
+        <mat-form-field style="background-color: white;">
+            <mat-label>sortuj według</mat-label>
+            <mat-select name="sort" (selectionChange)="onSelectOrderBy($event.value)">
+              <mat-option value="date">data przyjęcia</mat-option>
+              <mat-option value="diet">dieta</mat-option>
+              <mat-option value="name">nazwisko</mat-option>
+            </mat-select>
+          </mat-form-field>
     </p>
+}   
 
+@if(isResponseHere) {
  
     <div class="row">
         <div class="col-lg-2">

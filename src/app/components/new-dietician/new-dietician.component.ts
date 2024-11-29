@@ -90,11 +90,6 @@ export class NewDieticianComponent {
         }
       }
     }
-    console.log('-----------');
-    for(let i = 0; i < this.chosenWards.length; i++) {
-      console.log(this.chosenWards[i].name);
-    }
-    console.log('-----------');
   }
 
   handleSelectAll() {
@@ -108,11 +103,6 @@ export class NewDieticianComponent {
         }
       }
     }
-    console.log('-----------');
-    for(let i = 0; i < this.chosenWards.length; i++) {
-      console.log(this.chosenWards[i].name);
-    }
-    console.log('-----------');
   }
 
   handleFileUpload(event: any) {

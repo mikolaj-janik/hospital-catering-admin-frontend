@@ -17,9 +17,9 @@ export class PatientService {
     private toastr: ToastrService 
   ) {}
 
-  getPatientsByWardId(id: number): Observable<Patient[]> {
+  getPatientsByWardId(id: number, orderBy: string = 'date'): Observable<Patient[]> {
     const headers = this.authService.getAuthHeaders();
-    const url = `${environment.apiUrl}/patients/ward/${id}`;
+    const url = `${environment.apiUrl}/patients/ward/${id}?orderBy=${orderBy}`;
 
     return this.http.get<Patient[]>(url, { headers });
   }
