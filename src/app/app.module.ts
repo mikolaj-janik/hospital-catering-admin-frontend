@@ -66,6 +66,7 @@ import { EditWardComponent } from './components/edit-ward/edit-ward.component';
 import { WardDetailsComponent } from './components/ward-details/ward-details.component';
 import { DieticianDetailsComponent } from './components/dietician-details/dietician-details.component';
 import { NewDieticianComponent } from './components/new-dietician/new-dietician.component';
+import { OrdersComponent } from './components/orders/orders.component';
 
 
 const routes: Routes = [
@@ -80,6 +81,7 @@ const routes: Routes = [
   {path: 'dieticians/register', component: NewDieticianComponent, canActivate: [authGuard]},
   {path: 'dieticians/details/:id', component: DieticianDetailsComponent, canActivate: [authGuard]},
   {path: 'meals', component: MealsComponent, canActivate: [authGuard]},
+  {path: 'meals/orders', component: OrdersComponent, canActivate: [authGuard]},
   {path: 'meals/details/:id', component: MealDetailsComponent, canActivate: [authGuard]},
   {path: 'meals/edit/:id', component: EditMealComponent, canActivate: [authGuard]},
   {path: 'meals/search/:keyword', component: MealsComponent, canActivate: [authGuard]},

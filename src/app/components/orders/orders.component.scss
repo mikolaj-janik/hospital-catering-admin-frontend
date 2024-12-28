@@ -1,0 +1,29 @@
+h2, h3, h4, h5 {
+    font-weight: 400;
+}
+
+.row-summary {
+    font-weight: 500; 
+    padding-bottom: 0px; 
+    border-bottom: none;
+}
+
+table {
+    border: rgb(238, 238, 238);
+}
+
+.row-header {
+    line-height: 14px;
+}
+
+mat-paginator{
+    width: 500px;
+    border-radius: 8px;
+}
+
+.w-5 {
+    width: 5%;
+}
+.w-95 {
+    width: 95%;
+}

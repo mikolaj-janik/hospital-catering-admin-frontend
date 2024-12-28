@@ -186,8 +186,6 @@ export class DiaryComponent {
     }
   }
 
-  private 
-
   private refreshCalendar() {
     this.calendarOptions = {
       ...this.calendarOptions,

@@ -98,6 +98,11 @@ export class CustomSidenavComponent {
           route: 'diary'
         },
         {
+          icon: 'fas fa-clipboard-list',
+          label: 'Zamówienia',
+          route: 'orders'
+        },
+        {
           icon: 'fas fa-carrot',
           label: 'Diety',
           route: 'diets',
